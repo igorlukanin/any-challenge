@@ -4,9 +4,8 @@ const db = require('../util/db');
 
 const createPlayers = emails => db.c.then(c => db.r
     .expr(emails)
-    .map(email => ({ email }))
-    .map(row => row.merge({
-        id: db.r.uuid(row('email').add('_').add(config.get('secret'))),
+    .map(email => ({
+        email,
         creation_date: db.r.now()
     }))
     .forEach(row => db.players.insert(row, { conflict: 'update', returnChanges: 'always' }))
@@ -19,8 +18,23 @@ const loadPlayers = ids => db.c.then(c => db.players
     .run(c)
     .then(cursor => cursor.toArray()));
 
+const loadPlayer = id => db.c.then(c => db.players
+    .get(id)
+    .run(c)
+    .then(player => {
+        if (player == null) {
+            return Promise.reject({
+                message: 'Player not found',
+                id: id
+            });
+        }
+
+        return player;
+    }));
+
 
 module.exports = {
     createAll: createPlayers,
-    loadAll: loadPlayers
+    loadAll: loadPlayers,
+    load: loadPlayer
 };

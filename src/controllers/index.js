@@ -18,7 +18,9 @@ router.get('/', (req, res) => {
     res.render('index');
 });
 
-router.use('/challenge', require('./challenge'));
+router.use('/challenges', require('./challenge'));
+
+router.use('/players', require('./player'));
 
 
 module.exports = router;
