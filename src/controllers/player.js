@@ -1,6 +1,6 @@
 const Promise = require('Promise');
 const router = require('express').Router();
-const events = require('../models/event');
+const cards = require('../models/card');
 const players = require('../models/player');
 
 
@@ -9,12 +9,12 @@ router.get('/:id', (req, res) => {
 
     const thisPlayer = players.load(id);
 
-    const theirEvents = thisPlayer
-        .then(player => events.loadAllByPlayer(player.id));
+    const theirCards = thisPlayer
+        .then(player => cards.loadAllByPlayer(player.id));
     
     Promise
-        .all([ thisPlayer, theirEvents ])
-        .then(([ player, events ]) => res.render('player/one', { player, events }))
+        .all([ thisPlayer, theirCards ])
+        .then(([ player, cards ]) => res.render('player/one', { player, cards }))
         .catch(err => res.render('errors/index', { err }));
 });
 

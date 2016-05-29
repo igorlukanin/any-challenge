@@ -1,7 +1,7 @@
-var debug = require('console-debug');
+const debug = require('console-debug');
 
 
-var console = new debug({
+const console = new debug({
     uncaughtExceptionCatch: true,
     logToFile:              true,
     colors:                 true,
@@ -10,9 +10,12 @@ var console = new debug({
 });
 
 
-var logAppState = (app, message) => console.info(app + ': ' + message);
+const logAppState = (app, message) => console.info(app + ' ' + message);
+
+const logPlayerInfo = (player, message) => console.info(player.email + ' ' + message);
 
 
 module.exports = {
-    appState: logAppState
+    appState: logAppState,
+    playerInfo: logPlayerInfo
 };

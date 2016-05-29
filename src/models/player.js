@@ -18,6 +18,10 @@ const loadPlayers = ids => db.c.then(c => db.players
     .run(c)
     .then(cursor => cursor.toArray()));
 
+const feedPlayers = () => db.c.then(c => db.players
+    .changes({ includeInitial: true })
+    .run(c));
+
 const loadPlayer = id => db.c.then(c => db.players
     .get(id)
     .run(c)
@@ -36,5 +40,6 @@ const loadPlayer = id => db.c.then(c => db.players
 module.exports = {
     createAll: createPlayers,
     loadAll: loadPlayers,
-    load: loadPlayer
+    feedAll: feedPlayers,
+    load: loadPlayer,
 };

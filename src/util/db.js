@@ -2,7 +2,7 @@ var config = require('config'),
     Promise = require('promise'),
     r = require('rethinkdb'),
 
-    tables = [ 'challenges', 'players', 'events' ];
+    tables = [ 'challenges', 'players', 'cards' ];
 
 
 var options = {
