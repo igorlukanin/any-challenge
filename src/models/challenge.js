@@ -17,10 +17,7 @@ const loadChallenge = id => db.c.then(c => db.challenges
     .run(c)
     .then(challenge => {
         if (challenge == null) {
-            return Promise.reject({
-                message: 'Challenge not found',
-                id: id
-            });
+            return Promise.reject({ message: 'Challenge not found', id: id });
         }
 
         return challenge;

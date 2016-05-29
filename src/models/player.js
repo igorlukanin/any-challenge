@@ -27,10 +27,7 @@ const loadPlayer = id => db.c.then(c => db.players
     .run(c)
     .then(player => {
         if (player == null) {
-            return Promise.reject({
-                message: 'Player not found',
-                id: id
-            });
+            return Promise.reject({ message: 'Player not found', id: id });
         }
 
         return player;

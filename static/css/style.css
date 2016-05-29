@@ -1,0 +1,20 @@
+body {
+    margin: 0;
+}
+
+.cards {
+    padding: 1vw;
+}
+
+.card {
+    background: #eee;
+    display: inline-block;
+    margin: 1vw;
+
+    width: 25vw;
+    height: 25vw;
+}
+
+.card_played {
+    background: #fee;
+}

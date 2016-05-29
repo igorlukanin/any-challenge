@@ -1,5 +1,75 @@
 <% extend 'layouts/default.ect' %>
 
+<div id="cards" class="cards"></div>
+
 <pre><%- JSON.stringify(@player, null, 2) %></pre>
 
 <pre><%- JSON.stringify(@cards, null, 2) %></pre>
+
+<script>
+    var cards = <%- JSON.stringify(@cards) %>;
+
+    var updateCard = function(card) {
+        for (var i in cards) {
+            if (cards[i].id == card.id) {
+                cards[i] = card;
+            }
+        }
+
+        drawCards();
+    };
+
+    var playCard = function(data) {
+        d3.xhr('/cards/' + data.id)
+                .response(function(request) { return JSON.parse(request.responseText); })
+                .post(function() {
+                    console.log('post');
+                    console.log(arguments);
+                })
+                .on('load', updateCard)
+                .on('error', function(req) {
+                    // OK, do nothing
+                });
+    };
+
+    var drawCard = function(data) {
+        var card = d3.select(this);
+
+        card.append('div')
+                .classed('card__name', true)
+                .text(data.name);
+
+        card.append('div')
+                .classed('card__rules', true)
+                .text(data.rules);
+
+        if (data.solo) {
+            card.append('a')
+                    .classed('card__solo-action-button', true)
+                    .text(data.score)
+                    .on('click', playCard);
+        }
+    };
+
+    var redrawCard = function(data) {
+        var card = d3.select(this);
+
+        if (data.played) {
+            card.classed('card_played', true);
+        }
+    };
+
+    var drawCards = function() {
+        d3.select('#cards')
+                .selectAll('.card')
+                .data(cards)
+                .each(redrawCard)
+            .enter()
+                .append('div')
+                .classed('card', true)
+                .each(drawCard)
+                .each(redrawCard);
+    };
+
+    drawCards();
+</script>

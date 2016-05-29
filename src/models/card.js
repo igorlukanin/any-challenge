@@ -22,8 +22,34 @@ const createCardsByPlayer = (playerId, cards) => db.c.then(c => db.r
     .then(result => result.changes ? result.changes.map(change => change.new_val) : [])
     .then(cards => cards.map(card => card.id)));
 
+const loadCard = id => db.c.then(c => db.cards
+    .get(id)
+    .run(c)
+    .then(card => {
+        if (card == null) {
+            return Promise.reject({ message: 'Card not found', id: id });
+        }
+
+        return card;
+    }));
+
+const playCard = id => loadCard(id).then(card => {
+    if (card.played) {
+        return Promise.reject({ message: 'Card already played', id: id });
+    }
+    
+    card.played = true;
+
+    return db.c.then(c => db.cards
+        .get(card.id)
+        .update(card, { returnChanges: 'always' })
+        .run(c)
+        .then(result => result.changes[0].new_val));
+    });
+
 
 module.exports = {
     loadAllByPlayer: loadCardsByPlayer,
+    play: playCard,
     ensureInitialCardsAreDealtByPlayer: ensureInitialCardsAreDealtByPlayer
 };
