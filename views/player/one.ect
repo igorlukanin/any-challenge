@@ -20,16 +20,17 @@
     };
 
     var playCard = function(data) {
-        d3.xhr('/cards/' + data.id)
+        d3.xhr('/cards/' + data.id + '/play')
                 .response(function(request) { return JSON.parse(request.responseText); })
-                .post(function() {
-                    console.log('post');
-                    console.log(arguments);
-                })
-                .on('load', updateCard)
-                .on('error', function(req) {
-                    // OK, do nothing
-                });
+                .post()
+                .on('load', updateCard);
+    };
+
+    var skipCard = function(data) {
+        d3.xhr('/cards/' + data.id + '/skip')
+                .response(function(request) { return JSON.parse(request.responseText); })
+                .post()
+                .on('load', updateCard);
     };
 
     var drawCard = function(data) {
@@ -46,17 +47,22 @@
         if (data.solo) {
             card.append('a')
                     .classed('card__solo-action-button', true)
-                    .text(data.score)
+                    .text('+' + data.score)
                     .on('click', playCard);
+        }
+
+        if (data.skip) {
+            card.append('a')
+                    .classed('card__skip-action-button', true)
+                    .text('Сдаться')
+                    .on('click', skipCard);
         }
     };
 
     var redrawCard = function(data) {
-        var card = d3.select(this);
-
-        if (data.played) {
-            card.classed('card_played', true);
-        }
+        var card = d3.select(this)
+                .classed('card_played', data.played)
+                .classed('card_skipped', data.skipped);
     };
 
     var drawCards = function() {

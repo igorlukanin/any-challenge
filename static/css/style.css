@@ -11,10 +11,22 @@ body {
     display: inline-block;
     margin: 1vw;
 
-    width: 25vw;
-    height: 25vw;
+    width: 15vw;
+    height: 15vw;
 }
 
 .card_played {
     background: #fee;
+}
+
+.card_skipped {
+    opacity: .5;
+}
+
+.card_played .card__solo-action-button, .card_skipped .card__solo-action-button {
+    display: none;
+}
+
+.card_played .card__skip-action-button, .card_skipped .card__skip-action-button {
+    display: none;
 }

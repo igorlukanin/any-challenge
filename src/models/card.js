@@ -34,10 +34,10 @@ const loadCard = id => db.c.then(c => db.cards
     }));
 
 const playCard = id => loadCard(id).then(card => {
-    if (card.played) {
-        return Promise.reject({ message: 'Card already played', id: id });
+    if (card.played || card.skipped) {
+        return Promise.reject({ message: 'Card already played or skipped', id: id });
     }
-    
+
     card.played = true;
 
     return db.c.then(c => db.cards
@@ -45,11 +45,26 @@ const playCard = id => loadCard(id).then(card => {
         .update(card, { returnChanges: 'always' })
         .run(c)
         .then(result => result.changes[0].new_val));
-    });
+});
+
+const skipCard = id => loadCard(id).then(card => {
+    if (card.played || card.skipped) {
+        return Promise.reject({ message: 'Card already played or skipped', id: id });
+    }
+
+    card.skipped = true;
+
+    return db.c.then(c => db.cards
+        .get(card.id)
+        .update(card, { returnChanges: 'always' })
+        .run(c)
+        .then(result => result.changes[0].new_val));
+});
 
 
 module.exports = {
     loadAllByPlayer: loadCardsByPlayer,
     play: playCard,
+    skip: skipCard,
     ensureInitialCardsAreDealtByPlayer: ensureInitialCardsAreDealtByPlayer
 };
