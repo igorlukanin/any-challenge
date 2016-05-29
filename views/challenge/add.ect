@@ -1,0 +1,9 @@
+<% extend 'layouts/default.ect' %>
+
+<h1>New challenge</h1>
+
+<form action="/challenge" method="post">
+    <p>Name: <input type="text" name="title"/></p>
+    <p>Players' emails: <textarea name="emails"></textarea></p>
+    <p><input type="submit"/></p>
+</form>

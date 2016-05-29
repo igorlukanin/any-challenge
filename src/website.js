@@ -1,12 +1,13 @@
-var compression = require('compression'),
-    config = require('config'),
-    ect = require('ect'),
-    express = require('express'),
+const compression = require('compression');
+const config = require('config');
+const bodyParser = require('body-parser');
+const ect = require('ect');
+const express = require('express');
 
-    controllers = require('./controllers'),
-    log = require('./util/log'),
+const controllers = require('./controllers');
+const log = require('./util/log');
 
-    port = config.get('server.port');
+const port = config.get('server.port');
 
 
 process.on('uncaughtException', (err) => console.error(err.stack));
@@ -18,6 +19,7 @@ express()
     .use('/static/js/d3', express.static('node_modules/d3'))
 
     .use(compression())
+    .use(bodyParser.urlencoded({ extended: true }))
     .use(controllers)
 
     .set('view engine', 'ect')

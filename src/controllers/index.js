@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
     res.render('index');
 });
 
-// router.use('/login',    require('./login'));
+router.use('/challenge', require('./challenge'));
 
 
 module.exports = router;
