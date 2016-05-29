@@ -33,14 +33,14 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
     const id = req.params.id;
 
-    const challenge = challenges.load(id);
+    const thisChallenge = challenges.load(id);
 
-    const players = challenge
-        .then();
+    const thisPlayers = thisChallenge
+        .then(challenge => players.loadAll(challenge.players));
 
     Promise
-        .all()
-        .then(challenge => res.render('challenge/one', { challenge }))
+        .all([ thisChallenge, thisPlayers ])
+        .then(([ challenge, players ]) => res.render('challenge/one', { challenge, players }))
         .catch(err => res.render('errors/index', { err }));
 });
 
