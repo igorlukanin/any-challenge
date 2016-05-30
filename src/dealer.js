@@ -16,14 +16,38 @@ players
     .feedAll()
     .then(cursor => cursor.each((err, result) => {
         var player = result.new_val;
+
+        if (!player) {
+            return;
+        }
+
         log.playerInfo(player, 'in game');
 
         cards
-            .ensureInitialCardsAreDealtByPlayer(player.id)
+            .dealInitialByPlayer(player.id)
             .then(cards => {
                 if (cards.length > 0) {
                     log.playerInfo(player, 'gets ' + pronounce(cards.length, 'card'));
                 }
+            });
+    }))
+    .catch(err => console.error(err));
+
+cards
+    .feedPlayedOrSkipped()
+    .then(cursor => cursor.each((err, result) => {
+        var card = result.new_val;
+
+        if (!card) {
+            return;
+        }
+
+        cards
+            .dealRegularByPlayer(card.player)
+            .then(cards => {
+                // if (cards.length > 0) {
+                //     log.playerInfo(card, 'gets ' + pronounce(cards.length, 'card'));
+                // }
             });
     }))
     .catch(err => console.error(err));

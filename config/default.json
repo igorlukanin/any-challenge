@@ -6,5 +6,10 @@
     "host": "localhost",
     "port": 28015,
     "db": "any_challenge"
+  },
+  "game": {
+    "limits": {
+      "regular": 3
+    }
   }
 }
