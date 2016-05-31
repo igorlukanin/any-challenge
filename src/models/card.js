@@ -33,6 +33,11 @@ const loadCardsByPlayer = playerId => db.c.then(c => db.cards
     .run(c)
     .then(cursor => cursor.toArray()));
 
+const loadCardsByCompetitor = playerId => db.c.then(c => db.cards
+    .filter({ competitor: playerId })
+    .run(c)
+    .then(cursor => cursor.toArray()));
+
 const dealInitialCardsByPlayer = playerId => loadCardsByPlayer(playerId)
     .then(cards => createCardsByPlayer(playerId, dealInitialCards(cards)));
 
@@ -144,6 +149,7 @@ const feedPlayedOrSkippedCards = () => db.c.then(c => db.cards
 
 module.exports = {
     loadAllByPlayer: loadCardsByPlayer,
+    loadAllByCompetitor: loadCardsByCompetitor,
     feedPlayedOrSkipped: feedPlayedOrSkippedCards,
     play: playCard,
     skip: skipCard,

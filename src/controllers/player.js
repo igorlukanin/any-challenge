@@ -9,9 +9,11 @@ router.get('/:id', (req, res) => {
 
     const thisPlayer = players.load(id);
 
-    const theirCards = thisPlayer
+    const hisCards = thisPlayer
         .then(player => cards.loadAllByPlayer(player.id))
         .then(cards => Promise.all(cards.map(card => {
+            card.own = true;
+
             if (card.solo) {
                 return card;
             }
@@ -24,10 +26,25 @@ router.get('/:id', (req, res) => {
                     });
             }
         })));
+
+    const hisCardsAsCompetitor = thisPlayer
+        .then(player => cards.loadAllByCompetitor(player.id))
+        .then(cards => Promise.all(cards.map(card => {
+            return players
+                .load(card.player)
+                .then(player => {
+                    card.own = false;
+                    card.player = player;
+                    return card;
+                });
+        })));
     
     Promise
-        .all([ thisPlayer, theirCards ])
-        .then(([ player, cards ]) => res.render('player/one', { player, cards }))
+        .all([ thisPlayer, hisCards, hisCardsAsCompetitor ])
+        .then(([ player, hisCards, hisCardsAsCompetitor ]) => res.render('player/one', {
+            player,
+            cards: hisCards.concat(hisCardsAsCompetitor)
+        }))
         .catch(err => res.render('errors/index', { err }));
 });
 

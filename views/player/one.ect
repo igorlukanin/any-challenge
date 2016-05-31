@@ -53,7 +53,7 @@
         else {
             card.append('div')
                     .classed('card__competitor', true)
-                    .text('vs. ' + data.competitor.email);
+                    .text('vs. ' + (data.own ? data.competitor.email : data.player.email));
         }
 
         if (data.skip) {
