@@ -43,5 +43,41 @@
     "name": "Крестики-нолики",
     "rules": "Сыграйте пять партий в крестики-нолики. В случае ничьей по партиям определите победителя с помощью камня, ножниц и бумаги",
     "score": 10
+  },
+  {
+    "type": "regular",
+    "type_id": "regular_balance",
+    "solo": false,
+    "skip": true,
+    "name": "Баланс",
+    "rules": "Кто дольше простоит на балансборде, тот и победил. Балансборд — около кофепоинта",
+    "score": 10
+  },
+  {
+    "type": "regular",
+    "type_id": "regular_1k-run",
+    "solo": false,
+    "skip": true,
+    "name": "Забег на 1 километр",
+    "rules": "Кто быстрее пробежит 1 километр, тот и победил",
+    "score": 20
+  },
+  {
+    "type": "regular",
+    "type_id": "regular_drink-water",
+    "solo": false,
+    "skip": true,
+    "name": "Полтора литра",
+    "rules": "Кто быстрее выпьет 1,5 литра воды, тот и победил",
+    "score": 15
+  },
+  {
+    "type": "regular",
+    "type_id": "regular_cities",
+    "solo": false,
+    "skip": true,
+    "name": "Города",
+    "rules": "Играйте в «Города». Кто замолчит больше, чем на секунды — проиграл",
+    "score": 15
   }
 ]
