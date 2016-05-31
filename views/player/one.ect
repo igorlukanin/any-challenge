@@ -50,6 +50,11 @@
                     .text('+' + data.score)
                     .on('click', playCard);
         }
+        else {
+            card.append('div')
+                    .classed('card__competitor', true)
+                    .text('vs. ' + data.competitor.email);
+        }
 
         if (data.skip) {
             card.append('a')

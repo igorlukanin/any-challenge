@@ -10,7 +10,20 @@ router.get('/:id', (req, res) => {
     const thisPlayer = players.load(id);
 
     const theirCards = thisPlayer
-        .then(player => cards.loadAllByPlayer(player.id));
+        .then(player => cards.loadAllByPlayer(player.id))
+        .then(cards => Promise.all(cards.map(card => {
+            if (card.solo) {
+                return card;
+            }
+            else {
+                return players
+                    .load(card.competitor)
+                    .then(competitor => {
+                        card.competitor = competitor;
+                        return card;
+                    });
+            }
+        })));
     
     Promise
         .all([ thisPlayer, theirCards ])
