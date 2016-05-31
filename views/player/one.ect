@@ -66,6 +66,7 @@
 
     var redrawCard = function(data) {
         var card = d3.select(this)
+                .classed('card_regular', data.type == 'regular')
                 .classed('card_played', data.played)
                 .classed('card_skipped', data.skipped);
     };

@@ -5,30 +5,27 @@ const deck = require('../../data/deck');
 const players = require('./player');
 
 
+const isInitial = card => card.type == 'initial';
+const isRegular = card => card.type == 'regular';
+
 const isActive = card => !card.played && !card.skipped;
 
-const isRegularAndActive = card => card.type == 'regular' && isActive(card);
-
-const getCards = type => deck.filter(card => card.type == type);
-
 // Deal all initial cards, if not already dealt
-const dealInitialCards = dealtCards => getCards('initial')
+const dealInitialCards = dealtCards => deck
+    .filter(isInitial)
     .filter(initialCard => !dealtCards.reduce((dealt, card) =>
         dealt || card.type_id == initialCard.type_id, false));
 
 // Deal up to a limited number of unplayed and unskipped regular cards
 // Skip previously chosen cards and competitors
-const dealRegularCards = (dealtCards, dealtForHimAndCompetitor) => {
-    const numberOfActiveCards = dealtCards
-        .filter(isRegularAndActive)
-        .length;
-
-    const randomCards = getCards('regular')
+const dealOneRegularCard = (dealtCards, dealtForHimAndCompetitor) => {
+    const randomCards = deck
+        .filter(isRegular)
         .filter(regularCard => !dealtForHimAndCompetitor.reduce((dealt, card) =>
             dealt || card.type_id == regularCard.type_id, false))
         .sort(() => 0.5 - Math.random());
 
-    return randomCards.slice(0, config.get('game.limits.regular') - numberOfActiveCards);
+    return randomCards[0];
 };
 
 const loadCardsByPlayer = playerId => db.c.then(c => db.cards
@@ -40,23 +37,39 @@ const dealInitialCardsByPlayer = playerId => loadCardsByPlayer(playerId)
     .then(cards => createCardsByPlayer(playerId, dealInitialCards(cards)));
 
 const dealRegularCardsByPlayer = playerId => loadCardsByPlayer(playerId).then(cards => {
-    const previousCompetitorIds = cards
-        .filter(isRegularAndActive)
-        .map(card => card.competitor);
+    const regularCards = cards.filter(isRegular);
 
-    const competitor = players.chooseCompetitor(playerId, previousCompetitorIds);
+    if (config.get('game.limits.regular') - regularCards.filter(isActive).length > 0) {
+        const previousCompetitorIds = regularCards.map(card => card.competitor);
+        const competitor = players.chooseCompetitor(playerId, previousCompetitorIds);
+        const hisCards = competitor.then(competitor => loadCardsByPlayer(competitor.id));
 
-    const hisCards = competitor.then(competitor => loadCardsByPlayer(competitor.id));
+        return Promise
+            .all([ competitor, hisCards ])
+            .then(([ competitor, hisCards ]) => {
+                const allRegularCards = regularCards
+                    .concat(hisCards)
+                    .filter(isRegular);
 
-    return Promise
-        .all([ competitor, hisCards ])
-        .then(([ competitor, hisCards ]) => {
-            const allRegularCards = cards
-                .concat(hisCards)
-                .filter(card => card.type == 'regular');
+                const card = dealOneRegularCard(cards, allRegularCards);
 
-            createCardsByPlayerAndCompetitor(playerId, competitor.id, dealRegularCards(cards, allRegularCards))
+                if (card) {
+                    return createCardsByPlayerAndCompetitor(playerId, competitor.id, [ card ]);
+                }
+                else {
+                    return Promise.reject({
+                        message: 'No cards left for player',
+                        id: playerId
+                    });
+                }
+            });
+    }
+    else {
+        return Promise.reject({
+            message: 'All cards dealt for player',
+            id: playerId
         });
+    }
 });
 
 const createCardsByPlayer = (playerId, cards) => db.c.then(c => db.r

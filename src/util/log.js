@@ -12,7 +12,7 @@ const console = new debug({
 
 const logAppState = (app, message) => console.info(app + ' ' + message);
 
-const logPlayerInfo = (player, message) => console.info(player.email + ' ' + message);
+const logPlayerInfo = (player, message) => console.info((player.email ? player.email : player) + ' ' + message);
 
 const logCardInfo = card => console.info(card.type_id + ' ' + (card.played ? 'played' : 'skipped'));
 

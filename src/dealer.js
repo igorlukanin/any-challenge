@@ -23,13 +23,16 @@ players
 
         log.playerInfo(player, 'in game');
 
-        cards
+        const deal = () => cards
             .dealInitialByPlayer(player.id)
             .then(cards => {
                 if (cards.length > 0) {
-                    log.playerInfo(player, 'gets ' + pronounce(cards.length, 'card'));
+                    log.playerInfo(player, 'gets ' + pronounce(cards.length, 'initial card'));
                 }
-            });
+            })
+            .catch(err => console.error(err));
+
+        deal();
     }))
     .catch(err => console.error(err));
 
@@ -42,12 +45,18 @@ cards
             return;
         }
 
-        cards
+        const deal = () => cards
             .dealRegularByPlayer(card.player)
             .then(cards => {
-                // if (cards.length > 0) {
-                //     log.playerInfo(card, 'gets ' + pronounce(cards.length, 'card'));
-                // }
-            });
+                if (cards.length > 0) {
+                    log.playerInfo(card.player, 'gets ' + pronounce(cards.length, 'regular card'));
+
+                    // Try to deal one more card
+                    deal();
+                }
+            })
+            .catch(err => console.error(err));
+
+        deal();
     }))
     .catch(err => console.error(err));

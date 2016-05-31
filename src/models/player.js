@@ -33,23 +33,21 @@ const loadPlayer = id => db.c.then(c => db.players
         return player;
     }));
 
-// Choose a new, previously unchosen competitor
+// Choose all previously unchosen competitors for this player
 const loadCompetitor = (playerId, previousCompetitorIds) => db.c.then(c => db.challenges
     .filter(db.r.row('players').contains(playerId))
     .nth(0) // The only challenge for this player
     .getField('players')
     .setDifference(previousCompetitorIds.concat(playerId))
-    .sample(1) // One random competitor
     .run(c)
     .then(cursor => cursor.toArray())
     .then(competitors => {
         if (competitors.length == 0) {
-            return Promise.reject({ message: 'Competitor not found for player', playerId: playerId });
+            return Promise.reject({ message: 'Competitors not found for player', playerId: playerId });
         }
 
-        return competitors[0];
-    }))
-    .then(competitorId => loadPlayer(competitorId));
+        return loadPlayer(competitors[0]);
+    }));
 
 
 module.exports = {
