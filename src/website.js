@@ -16,7 +16,8 @@ require('promise/lib/rejection-tracking').enable({ allRejections: true });
 
 express()
     .use('/static', express.static('static'))
-    .use('/static/js/d3', express.static('node_modules/d3'))
+    .use('/static/js', express.static('node_modules/d3'))
+    .use('/static/js', express.static('node_modules/socket.io-client'))
 
     .use(compression())
     .use(bodyParser.urlencoded({ extended: true }))

@@ -35,7 +35,7 @@ body {
     display: none;
 }
 
-.card__name {
+.card__name, .card__competitor {
     font-weight: bold;
     margin-bottom: 1em;
 }

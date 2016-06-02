@@ -4,10 +4,16 @@
 
 <pre><%- JSON.stringify(@player, null, 2) %></pre>
 
-<pre><%- JSON.stringify(@cards, null, 2) %></pre>
-
 <script>
-    var cards = <%- JSON.stringify(@cards) %>;
+    cards = [];
+
+    var socket = io('http://localhost:3016/cards', { query: 'player=<%= @player.id %>' });
+
+    socket.on('cards', function(updatedCards) {
+        cards = updatedCards;
+
+        drawCards();
+    });
 
     var updateCard = function(card) {
         for (var i in cards) {
@@ -74,7 +80,7 @@
     var drawCards = function() {
         d3.select('#cards')
                 .selectAll('.card')
-                .data(cards)
+                .data(cards, function(card) { return card.id; })
                 .each(redrawCard)
             .enter()
                 .append('div')

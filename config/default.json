@@ -2,6 +2,9 @@
   "server": {
     "port": 3015
   },
+  "ws": {
+    "port": 3016
+  },
   "rethinkdb": {
     "host": "localhost",
     "port": 28015,
