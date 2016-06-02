@@ -40,6 +40,13 @@
                 .on('load', updateCard);
     };
 
+    var appendScore = function(button, score) {
+        button.append('span')
+                .classed('player__card__buttons__button__score', true)
+                .classed('player__card__buttons__button__score_negative', score < 0)
+                .text(score < 0 ? '–' + -score : '+' + score);
+    };
+
     var drawCard = function(data) {
         var card = d3.select(this);
 
@@ -67,17 +74,17 @@
                     .text('Играть')
                     .on('click', playCard);
 
-            soloButton.append('span')
-                    .classed('player__card__buttons__button__score', true)
-                    .text(data.score);
+            appendScore(soloButton, data.scores.play);
         }
 
         if (data.skip) {
-            buttons.append('a')
+            var skipButton = buttons.append('a')
                     .classed('player__card__buttons__button', true)
                     .classed('player__card__buttons__button_skip', true)
                     .text('Сдаться')
                     .on('click', skipCard);
+
+            appendScore(skipButton, data.scores.skip);
         }
     };
 

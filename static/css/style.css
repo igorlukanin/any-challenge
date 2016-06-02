@@ -76,11 +76,13 @@ body {
 
 .player__card__buttons__button {
     border-right: solid 1px #ddd;
+    cursor: pointer;
     flex-grow: 1;
     font-size: 3vw;
     font-weight: bold;
     letter-spacing: 0.1em;
     line-height: 1.75em;
+    padding: 2.5vw;
     text-align: center;
     text-transform: uppercase;
 }
@@ -89,10 +91,8 @@ body {
     border: none;
 }
 
-.player__card__buttons__button_solo,
 .player__card__buttons__button_skip {
-    cursor: pointer;
-    padding: 2.5vw;
+    background: #eee;
 }
 
 .player__card_played .player__card__buttons__button_solo,
@@ -106,13 +106,22 @@ body {
 }
 
 .player__card__buttons__button__score {
+    color: #666;
     display: block;
+    font-size: 4vw;
     font-weight: normal;
+    letter-spacing: normal;
 }
 
 .player__card__buttons__button__score:before {
     content: '😀'; /* smiling emoji */
-    margin: 0.125em;
+    font-size: 1.5em;
+    padding-right: 0.1em;
     position: relative;
-    top: 0.05em;
+    top: 0.175em;
+    left: -0.1em;
+}
+
+.player__card__buttons__button__score_negative.player__card__buttons__button__score:before {
+    content: '😦'; /* sad emoji */
 }

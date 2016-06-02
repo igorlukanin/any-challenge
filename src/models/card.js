@@ -1,7 +1,22 @@
+// Loosing is an option — you don't get punished for trying,
+// but if you skip a card, you get a fine (negative score)
+const transformScores = card => {
+    card.scores = {
+        play: card.score,
+        win: card.score,
+        loose: 0,
+        skip: -Math.round(card.score / 2)
+    };
+
+    delete card.score;
+    return card;
+};
+
+
 const _ = require('lodash');
 const config = require('config');
 const db = require('../util/db');
-const deck = require('../../data/deck');
+const deck = require('../../data/deck').map(transformScores);
 const players = require('./player');
 
 
