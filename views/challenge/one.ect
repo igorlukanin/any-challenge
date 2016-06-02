@@ -1,5 +1,31 @@
 <% extend 'layouts/default.ect' %>
 
-<pre><%- JSON.stringify(@challenge, null, 2) %></pre>
+<div class="challenge">
+    <div class="challenge__title"><%= @challenge.title %></div>
+    <div id="players" class="players"></div>
+</div>
 
-<pre><%- JSON.stringify(@players, null, 2) %></pre>
+<script>
+    var players = <%- JSON.stringify(@players) %>;
+
+    var drawPlayer = function(data) {
+        var card = d3.select(this);
+
+        card.append('a')
+                .classed('player__email', true)
+                .attr('href', '/players/' + data.id)
+                .text(data.email);
+    };
+
+    var drawPlayers = function() {
+        d3.select('#players')
+                .selectAll('.player')
+                .data(players, function(data) { return data.id; })
+            .enter()
+                .append('div')
+                .classed('player', true)
+                .each(drawPlayer);
+    };
+
+    drawPlayers();
+</script>
