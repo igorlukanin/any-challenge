@@ -1,8 +1,9 @@
 <% extend 'layouts/default.ect' %>
 
-<div id="cards" class="cards"></div>
-
-<pre><%- JSON.stringify(@player, null, 2) %></pre>
+<div class="player">
+    <div class="player__email"><%= @player.email %></div>
+    <div id="cards" class="player__cards"></div>
+</div>
 
 <script>
     var cards = [];
@@ -43,28 +44,38 @@
         var card = d3.select(this);
 
         card.append('div')
-                .classed('card__name', true)
+                .classed('player__card__name', true)
                 .text(data.name);
 
         card.append('div')
-                .classed('card__rules', true)
+                .classed('player__card__rules', true)
                 .text(data.rules);
 
-        if (data.solo) {
-            card.append('a')
-                    .classed('card__solo-action-button', true)
-                    .text('+' + data.score)
-                    .on('click', playCard);
-        }
-        else {
+        if (!data.solo) {
             card.append('div')
-                    .classed('card__competitor', true)
+                    .classed('player__card__competitor', true)
                     .text('vs. ' + (data.own ? data.competitor.email : data.player.email));
         }
 
+        var buttons = card.append('div')
+                .classed('player__card__buttons', true);
+
+        if (data.solo) {
+            var soloButton = buttons.append('a')
+                    .classed('player__card__buttons__button', true)
+                    .classed('player__card__buttons__button_solo', true)
+                    .text('Играть')
+                    .on('click', playCard);
+
+            soloButton.append('span')
+                    .classed('player__card__buttons__button__score', true)
+                    .text(data.score);
+        }
+
         if (data.skip) {
-            card.append('a')
-                    .classed('card__skip-action-button', true)
+            buttons.append('a')
+                    .classed('player__card__buttons__button', true)
+                    .classed('player__card__buttons__button_skip', true)
                     .text('Сдаться')
                     .on('click', skipCard);
         }
@@ -72,19 +83,19 @@
 
     var redrawCard = function(data) {
         var card = d3.select(this)
-                .classed('card_regular', data.type == 'regular')
-                .classed('card_played', data.played)
-                .classed('card_skipped', data.skipped);
+                .classed('player__card_regular', data.type == 'regular')
+                .classed('player__card_played', data.played)
+                .classed('player__card_skipped', data.skipped);
     };
 
     var drawCards = function() {
         d3.select('#cards')
-                .selectAll('.card')
-                .data(cards, function(card) { return card.id; })
+                .selectAll('.player__card')
+                .data(cards, function(data) { return data.id; })
                 .each(redrawCard)
             .enter()
                 .append('div')
-                .classed('card', true)
+                .classed('player__card', true)
                 .each(drawCard)
                 .each(redrawCard);
     };

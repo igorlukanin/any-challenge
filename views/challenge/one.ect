@@ -2,7 +2,7 @@
 
 <div class="challenge">
     <div class="challenge__title"><%= @challenge.title %></div>
-    <div id="players" class="players"></div>
+    <div id="players" class="challenge__players"></div>
 </div>
 
 <script>
@@ -12,18 +12,18 @@
         var card = d3.select(this);
 
         card.append('a')
-                .classed('player__email', true)
+                .classed('challenge__player__email', true)
                 .attr('href', '/players/' + data.id)
                 .text(data.email);
     };
 
     var drawPlayers = function() {
         d3.select('#players')
-                .selectAll('.player')
+                .selectAll('.challenge__player')
                 .data(players, function(data) { return data.id; })
             .enter()
                 .append('div')
-                .classed('player', true)
+                .classed('challenge__player', true)
                 .each(drawPlayer);
     };
 

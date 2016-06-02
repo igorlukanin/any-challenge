@@ -1,59 +1,8 @@
 body {
+    background: rgb(240, 239, 237);
+    font: normal 4vw sans-serif;
+    line-height: 1.5em;
     margin: 0;
-    font: normal 12pt sans-serif;
-}
-
-.cards {
-    padding: 1vw;
-}
-
-.card {
-    background: #eee;
-    display: inline-block;
-    margin: 1vw;
-
-    width: 20vw;
-    height: 20vw;
-}
-
-.card_regular {
-    background: #efe;
-}
-
-.card_played {
-    background: #fee;
-}
-
-.card_skipped {
-    opacity: .5;
-}
-
-.card_played .card__solo-action-button, .card_skipped .card__solo-action-button {
-    display: none;
-}
-
-.card_played .card__skip-action-button, .card_skipped .card__skip-action-button {
-    display: none;
-}
-
-.card__name, .card__competitor {
-    font-weight: bold;
-    margin-bottom: 1em;
-}
-
-.card__rules {
-    font-style: italic;
-    margin-bottom: 1em;
-}
-
-.card__solo-action-button, .card__skip-action-button {
-    cursor: pointer;
-    margin: 1em;
-    text-decoration: underline;
-}
-
-.card__skip-action-button {
-    color: #999;
 }
 
 .challenge {
@@ -62,9 +11,108 @@ body {
 
 .challenge__title {
     font-size: 1.5em;
-    margin-bottom: 0.5em;
+    margin-bottom: 2vw;
 }
 
-.player {
-    line-height: 1.5em;
+.player {  }
+
+.player__email {
+    font-size: 1.5em;
+    text-align: center;
+    margin: 7.5vw auto 2.5vw;
+}
+
+
+.player__cards {
+    display: flex;
+    flex-direction: column;
+    padding: 5vw 10vw;
+}
+
+.player__card {
+    background: #fff;
+    border: solid 1px #ddd;
+    box-shadow: 0 1.5vw 2.5vw #ccc;
+
+    box-sizing: border-box;
+    margin-bottom: 7.5vw;
+
+    width: 80vw;
+    /*height: 80vw;*/ /* TODO: Decide if cards should be square */
+}
+
+.player__card_regular {
+    background: #efe;
+}
+
+.player__card_played {
+    background: #fee;
+}
+
+.player__card_skipped {
+    opacity: .5;
+}
+
+.player__card__name {
+    font-weight: bold;
+    text-align: center;
+    margin: 5vw 7.5vw;
+}
+
+.player__card__rules {
+    font-style: italic;
+    margin: 5vw 7.5vw;
+}
+
+.player__card__competitor {
+    font-weight: bold;
+    margin: 5vw 7.5vw;
+}
+
+.player__card__buttons {
+    border-top: solid 1px #ddd;
+    display: flex;
+}
+
+.player__card__buttons__button {
+    border-right: solid 1px #ddd;
+    flex-grow: 1;
+    font-size: 3vw;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    line-height: 1.75em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.player__card__buttons__button:last-of-type {
+    border: none;
+}
+
+.player__card__buttons__button_solo,
+.player__card__buttons__button_skip {
+    cursor: pointer;
+    padding: 2.5vw;
+}
+
+.player__card_played .player__card__buttons__button_solo,
+.player__card_skipped .player__card__buttons__button_solo {
+    display: none;
+}
+
+.player__card_played .player__card__buttons__button_skip,
+.player__card_skipped .player__card__buttons__button_skip {
+    display: none;
+}
+
+.player__card__buttons__button__score {
+    display: block;
+    font-weight: normal;
+}
+
+.player__card__buttons__button__score:before {
+    content: '😀'; /* smiling emoji */
+    margin: 0.125em;
+    position: relative;
+    top: 0.05em;
 }
