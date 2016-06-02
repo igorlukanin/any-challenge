@@ -5,7 +5,7 @@
 <pre><%- JSON.stringify(@player, null, 2) %></pre>
 
 <script>
-    cards = [];
+    var cards = [];
 
     var socket = io('http://localhost:3016/cards', { query: 'player=<%= @player.id %>' });
 

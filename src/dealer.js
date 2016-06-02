@@ -22,7 +22,7 @@ const removeClient = removedClient => {
 };
 
 const notifyPlayer = (playerId, cards) => clients
-    .filter(client => client.handshake.query.player == removedClient.handshake.query.player)
+    .filter(client => client.handshake.query.player == playerId)
     .forEach(client => client.emit('cards', cards));
 
 const loadCards = playerId => {
@@ -62,10 +62,8 @@ const loadCards = playerId => {
         .catch(err => res.render('errors/index', { err }));
 };
 
-const pushCardsToPlayer = playerId => {
-    loadCards(playerId)
-        .then(cards => notifyPlayer(playerId, cards));
-};
+const pushCardsToPlayer = playerId => loadCards(playerId)
+    .then(cards => notifyPlayer(playerId, cards));
 
 
 log.appState('dealer', 'ready to deal cards');
@@ -74,14 +72,12 @@ io()
     .listen(config.get('ws.port'))
     .of('/cards')
     .on('connection', socket => {
-        const player = socket.handshake.query.player;
-        
-        addClient(socket);
-        pushCardsToPlayer(player);
+        const playerId = socket.handshake.query.player;
 
-        socket.on('disconnect', () => {
-            clients[player] = undefined;
-        });
+        addClient(socket);
+        pushCardsToPlayer(playerId);
+
+        socket.on('disconnect', () => removeClient(socket));
     });
 
 players
