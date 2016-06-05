@@ -59,6 +59,11 @@ const loadCards = playerId => {
     return Promise
         .all([ hisCards, hisCardsAsCompetitor ])
         .then(([ hisCards, hisCardsAsCompetitor ]) => hisCards.concat(hisCardsAsCompetitor))
+        .then(cards => {
+            cards.sort(card => card.creation_date);
+            cards.reverse();
+            return cards;
+        })
         .catch(err => res.render('errors/index', { err }));
 };
 

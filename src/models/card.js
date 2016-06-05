@@ -11,10 +11,16 @@ const isRegular = card => card.type == 'regular';
 const isActive = card => !card.played && !card.skipped;
 
 // Deal all initial cards, if not already dealt
-const dealInitialCards = dealtCards => deck
-    .filter(isInitial)
-    .filter(initialCard => !dealtCards.reduce((dealt, card) =>
-        dealt || card.type_id == initialCard.type_id, false));
+const dealInitialCards = dealtCards => {
+    const cards = deck
+        .filter(isInitial)
+        .filter(initialCard => !dealtCards.reduce((dealt, card) =>
+            dealt || card.type_id == initialCard.type_id, false));
+
+    cards.sort(card => card.priority);
+    cards.reverse();
+    return cards;
+};
 
 // Deal up to a limited number of unplayed and unskipped regular cards
 // Skip previously chosen cards and competitors

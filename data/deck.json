@@ -2,6 +2,7 @@
   {
     "type": "initial",
     "type_id": "initial_name",
+    "priority": 1,
     "emoji": "🙋🏻",
     "emoji_note": "happy person raising one hand",
     "solo": true,
@@ -13,6 +14,7 @@
   {
     "type": "initial",
     "type_id": "initial_selfie",
+    "priority": 2,
     "emoji": "📷",
     "emoji_note": "camera",
     "solo": true,
@@ -24,6 +26,7 @@
   {
     "type": "initial",
     "type_id": "initial_phone",
+    "priority": 3,
     "emoji": "📱",
     "emoji_note": "mobile_phone",
     "solo": true,
@@ -35,6 +38,7 @@
   {
     "type": "initial",
     "type_id": "initial_telegram",
+    "priority": 4,
     "solo": true,
     "skip": true,
     "name": "Телеграм",
