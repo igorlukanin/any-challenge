@@ -3,20 +3,20 @@ const router = require('express').Router();
 const cards = require('../models/card');
 
 
-router.post('/:id/play', (req, res) => {
-    const id = req.params.id;
+const actions = [
+    ['/:id/flip', cards.flip],
+    ['/:id/play', cards.play],
+    ['/:id/skip', cards.skip]
+];
 
-    cards.play(id)
-        .then(card => res.json(card))
-        .catch(err => res.status(400).json(err));
-});
+actions.forEach(action => {
+    router.post(action[0], (req, res) => {
+        const id = req.params.id;
 
-router.post('/:id/skip', (req, res) => {
-    const id = req.params.id;
-
-    cards.skip(id)
-        .then(card => res.json(card))
-        .catch(err => res.status(400).json(err));
+        action[1](id)
+            .then(card => res.json(card))
+            .catch(err => res.status(400).json(err));
+    });
 });
 
 

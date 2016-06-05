@@ -2,6 +2,8 @@
   {
     "type": "initial",
     "type_id": "initial_name",
+    "emoji": "🙋🏻",
+    "emoji_note": "happy person raising one hand",
     "solo": true,
     "skip": false,
     "name": "Имя",
@@ -11,6 +13,8 @@
   {
     "type": "initial",
     "type_id": "initial_selfie",
+    "emoji": "📷",
+    "emoji_note": "camera",
     "solo": true,
     "skip": true,
     "name": "Селфи",
@@ -20,6 +24,8 @@
   {
     "type": "initial",
     "type_id": "initial_phone",
+    "emoji": "📱",
+    "emoji_note": "mobile_phone",
     "solo": true,
     "skip": true,
     "name": "Телефон",
@@ -38,6 +44,8 @@
   {
     "type": "regular",
     "type_id": "regular_tic-tac-toe",
+    "emoji": "❌⭕️",
+    "emoji_note": "cross mark + heavy large circle",
     "solo": false,
     "skip": true,
     "name": "Крестики-нолики",
@@ -56,6 +64,8 @@
   {
     "type": "regular",
     "type_id": "regular_1k-run",
+    "emoji": "🏃🏻",
+    "emoji_note": "runner",
     "solo": false,
     "skip": true,
     "name": "Забег на 1 километр",
@@ -65,6 +75,8 @@
   {
     "type": "regular",
     "type_id": "regular_drink-water",
+    "emoji": "🍷",
+    "emoji_note": "wine glass",
     "solo": false,
     "skip": true,
     "name": "Полтора литра",
@@ -74,6 +86,8 @@
   {
     "type": "regular",
     "type_id": "regular_cities",
+    "emoji": "🏙",
+    "emoji_note": "cityscape",
     "solo": false,
     "skip": true,
     "name": "Города",

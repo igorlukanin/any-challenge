@@ -29,28 +29,69 @@ body {
     padding: 5vw 10vw;
 }
 
+.player__card__wrapper {
+    perspective: 1000px;
+}
+
 .player__card {
-    background: #fff;
     border: solid 1px #ddd;
     box-shadow: 0 1.5vw 2.5vw #ccc;
 
     box-sizing: border-box;
     margin-bottom: 7.5vw;
 
-    width: 80vw;
-    /*height: 80vw;*/ /* TODO: Decide if cards should be square */
+    position: relative;
+    transition: 0.5s;
+    transform-style: preserve-3d;
 }
 
-.player__card_regular {
-    background: #efe;
+.player__card_flipped {
+    transform: rotateY(180deg);
 }
 
 .player__card_played {
-    background: #fee;
+    opacity: 0.5;
 }
 
 .player__card_skipped {
-    opacity: .5;
+    opacity: 0.5;
+}
+
+.player__card__front {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    transform: rotateY(180deg);
+    z-index: 2;
+}
+
+.player__card__back {
+    cursor: pointer;
+    background: linear-gradient(-45deg, rgb(221, 214, 242), rgb(249, 174, 171));
+    transform: rotateY(0deg);
+}
+
+.player__card__front,
+.player__card__back {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.player__card,
+.player__card__front,
+.player__card__back {
+    width: 80vw;
+    height: 80vw;
+}
+
+.player__card__emoji {
+    font-size: 25vw;
+    line-height: 80vw;
+    text-align: center;
 }
 
 .player__card__name {

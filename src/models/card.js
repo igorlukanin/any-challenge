@@ -126,6 +126,20 @@ const loadCard = id => db.c.then(c => db.cards
         return card;
     }));
 
+const flipCard = id => loadCard(id).then(card => {
+    if (card.played || card.skipped) {
+        return Promise.reject({ message: 'Card already played or skipped', id: id });
+    }
+
+    card.flipped = true;
+
+    return db.c.then(c => db.cards
+        .get(card.id)
+        .update(card, { returnChanges: 'always' })
+        .run(c)
+        .then(result => result.changes[0].new_val));
+});
+
 const playCard = id => loadCard(id).then(card => {
     if (card.played || card.skipped) {
         return Promise.reject({ message: 'Card already played or skipped', id: id });
@@ -166,6 +180,7 @@ module.exports = {
     loadAllByPlayer: loadCardsByPlayer,
     loadAllByCompetitor: loadCardsByCompetitor,
     feedPlayedOrSkipped: feedPlayedOrSkippedCards,
+    flip: flipCard,
     play: playCard,
     skip: skipCard,
     dealInitialByPlayer: dealInitialCardsByPlayer,
