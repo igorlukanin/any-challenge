@@ -42,24 +42,25 @@
     var looseCard = function(data) { fireCardAction(data, '/loose'); };
     var skipCard = function(data) { fireCardAction(data, '/skip'); };
 
-    var appendScore = function(button, score) {
-        var text =
-                score == 0 ? score :
-                score < 0 ? '–' + -score :
-                '+' + score;
+    var prepareScore = function(score) {
+        return score == 0 ? score : score < 0 ? '–' + -score : '+' + score;
+    };
 
+    var appendScore = function(button, score) {
         button.append('span')
                 .classed('player__card__buttons__button__score', true)
-                .classed('player__card__buttons__button__score_negative', score < 0)
-                .text(text);
+                .text(prepareScore(score));
     };
 
     var l10n = {
         placeholders: {
             name: 'Имя и фамилия'
         },
+        labels: {
+            competitor: 'Соперник'
+        },
         buttons: {
-            play: 'Играю',
+            play: 'Сохранить',
             win: 'Победил',
             loose: 'Проиграл',
             skip: 'Сдаюсь'
@@ -96,13 +97,28 @@
         if (data.type_id == 'initial_name') {
             rules.append('input')
                     .classed('player__card__input', true)
-                    .attr('placeholder', player.name || l10n.placeholders.name);
+                    .attr('placeholder', l10n.placeholders.name)
+                    .property('value', player.name);
+        }
+        else if (data.type_id == 'initial_selfie') {
+            rules.append('input')
+                    .classed('player__card__input', true)
+                    .attr('type', 'file')
+                    .property('accept', 'image/*;capture=camera');
         }
 
         if (!data.solo) {
-            front.append('div')
-                    .classed('player__card__competitor', true)
-                    .text('vs. ' + (data.own ? data.competitor.email : data.player.email));
+            var competitor = front.append('div')
+                    .classed('player__card__competitor', true);
+
+            competitor.append('div')
+                    .classed('player__card__competitor__note', true)
+                    .text(l10n.labels.competitor);
+
+            competitor.append('a')
+                    .classed('player__card__competitor__name', true)
+                    .attr('href', 'mailto:' + (data.own ? data.competitor.email : data.player.email))
+                    .text(data.own ? (data.competitor.name || data.competitor.email) : (data.player.name || data.player.email));
         }
 
         var buttons = front.append('div')
@@ -140,7 +156,7 @@
 
             var looseButton = buttons.append('a')
                     .classed('player__card__buttons__button', true)
-                    .classed('player__card__buttons__button_win', true)
+                    .classed('player__card__buttons__button_loose', true)
                     .text(l10n.buttons.loose)
                     .on('click', looseCard);
 
@@ -181,7 +197,6 @@
 
     var calculateScore = function(cards) {
         return cards.reduce(function(score, card) {
-            console.log(card);
             return score +
                     (card.played ? card.scores.play : 0) +
                     (card.skipped ? card.scores.skip : 0);
@@ -205,10 +220,8 @@
         profile.select('.player__profile__name')
                 .text(player.name || player.email);
 
-        var score = calculateScore(cards);
-
         profile.select('.player__profile__score')
-                .text(score);
+                .text(prepareScore(calculateScore(cards)));
     };
 
     var drawPlayers = function() {
