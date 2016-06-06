@@ -5,8 +5,8 @@ const cards = require('../models/card');
 
 const actions = [
     ['/:id/flip', cards.flip],
-    ['/:id/play', cards.play],
-    ['/:id/skip', cards.skip]
+    ['/:id/flip-as-competitor', cards.flipAsCompetitor],
+    ['/:id/play', cards.play]
 ];
 
 actions.forEach(action => {

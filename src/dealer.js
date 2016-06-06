@@ -113,7 +113,7 @@ players
     .catch(err => console.error(err));
 
 cards
-    .feedPlayedOrSkipped()
+    .feedPlayed()
     .then(cursor => cursor.each((err, result) => {
         var card = result.new_val;
 

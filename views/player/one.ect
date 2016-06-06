@@ -40,7 +40,6 @@
     var flipCard = function(data) { fireCardAction(data, '/flip'); };
     var winCard = function(data) { fireCardAction(data, '/win'); };
     var looseCard = function(data) { fireCardAction(data, '/loose'); };
-    var skipCard = function(data) { fireCardAction(data, '/skip'); };
 
     var prepareScore = function(score) {
         return score == 0 ? score : score < 0 ? '–' + -score : '+' + score;
@@ -62,8 +61,7 @@
         buttons: {
             play: 'Сохранить',
             win: 'Победил',
-            loose: 'Проиграл',
-            skip: 'Сдаюсь'
+            loose: 'Проиграл'
         }
     };
 
@@ -160,25 +158,14 @@
 
             appendScore(looseButton, data.scores.loose);
         }
-
-        if (data.skip) {
-            var skipButton = buttons.append('a')
-                    .classed('player__card__buttons__button', true)
-                    .classed('player__card__buttons__button_skip', true)
-                    .text(l10n.buttons.skip)
-                    .on('click', skipCard);
-
-            appendScore(skipButton, data.scores.skip);
-        }
     };
 
     var redrawCard = function(data) {
         var card = d3.select(this)
                 .select('.player__card')
                 .classed('player__card_regular', data.type == 'regular')
-                .classed('player__card_flipped', data.flipped)
-                .classed('player__card_played', data.played)
-                .classed('player__card_skipped', data.skipped);
+                .classed('player__card_flipped', data.own ? data.flipped : data.competitor_flipped)
+                .classed('player__card_played', data.played);
     };
 
     var drawCards = function() {
@@ -195,9 +182,7 @@
 
     var calculateScore = function(cards) {
         return cards.reduce(function(score, card) {
-            return score +
-                    (card.played ? card.scores.play : 0) +
-                    (card.skipped ? card.scores.skip : 0);
+            return score + (card.played ? card.scores.play : 0);
         }, 0);
     };
 

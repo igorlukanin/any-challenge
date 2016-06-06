@@ -8,15 +8,13 @@ const players = require('./player');
 const isInitial = card => card.type == 'initial';
 const isRegular = card => card.type == 'regular';
 
-const isActive = card => !card.played && !card.skipped;
-
 // Deal all initial cards, if not already dealt
 const dealInitialCards = dealtCards => deck
     .filter(isInitial)
     .filter(initialCard => !dealtCards.reduce((dealt, card) =>
         dealt || card.type_id == initialCard.type_id, false));
 
-// Deal up to a limited number of unplayed and unskipped regular cards
+// Deal up to a limited number of unplayed regular cards
 // Skip previously chosen cards and competitors
 const dealOneRegularCard = (dealtCards, dealtForHimAndCompetitor) => {
     const randomCards = deck
@@ -44,7 +42,7 @@ const dealInitialCardsByPlayer = playerId => loadCardsByPlayer(playerId)
 const dealRegularCardsByPlayer = playerId => loadCardsByPlayer(playerId).then(cards => {
     const regularCards = cards.filter(isRegular);
 
-    if (config.get('game.limits.regular') - regularCards.filter(isActive).length > 0) {
+    if (config.get('game.limits.regular') - regularCards.filter(card => !card.played).length > 0) {
         const previousCompetitorIds = regularCards.map(card => card.competitor);
         const competitor = players.chooseCompetitor(playerId, previousCompetitorIds);
         const hisCards = competitor.then(competitor => loadCardsByPlayer(competitor.id));
@@ -112,8 +110,8 @@ const loadCard = id => db.c.then(c => db.cards
     }));
 
 const flipCard = id => loadCard(id).then(card => {
-    if (card.played || card.skipped) {
-        return Promise.reject({ message: 'Card already played or skipped', id: id });
+    if (card.played) {
+        return Promise.reject({ message: 'Card already played', id: id });
     }
 
     card.flipped = true;
@@ -126,8 +124,8 @@ const flipCard = id => loadCard(id).then(card => {
 });
 
 const playCard = (id, input) => loadCard(id).then(card => {
-    if (card.played || card.skipped) {
-        return Promise.reject({ message: 'Card already played or skipped', id: id });
+    if (card.played) {
+        return Promise.reject({ message: 'Card already played', id: id });
     }
 
     if (card.type_id == 'initial_name') {
@@ -146,27 +144,15 @@ const playCard = (id, input) => loadCard(id).then(card => {
         .get(card.id)
         .update(card, { returnChanges: 'always' })
         .run(c)
-        .then(result => result.changes[0].new_val));
+        .then(result => {
+            const card = result.changes[0].new_val;
+            card.own = true;
+            return card;
+        }));
 });
 
-const skipCard = id => loadCard(id).then(card => {
-    if (card.played || card.skipped) {
-        return Promise.reject({ message: 'Card already played or skipped', id: id });
-    }
-
-    card.skipped = true;
-
-    return db.c.then(c => db.cards
-        .get(card.id)
-        .update(card, { returnChanges: 'always' })
-        .run(c)
-        .then(result => result.changes[0].new_val));
-});
-
-const feedPlayedOrSkippedCards = () => db.c.then(c => db.cards
-    .filter(db.r.or(
-        db.r.row('played').default(false).eq(true),
-        db.r.row('skipped').default(false).eq(true)))
+const feedPlayedCards = () => db.c.then(c => db.cards
+    .filter(db.r.row('played').default(false).eq(true))
     .changes({ includeInitial: true })
     .run(c));
 
@@ -174,10 +160,9 @@ const feedPlayedOrSkippedCards = () => db.c.then(c => db.cards
 module.exports = {
     loadAllByPlayer: loadCardsByPlayer,
     loadAllByCompetitor: loadCardsByCompetitor,
-    feedPlayedOrSkipped: feedPlayedOrSkippedCards,
+    feedPlayed: feedPlayedCards,
     flip: flipCard,
     play: playCard,
-    skip: skipCard,
     dealInitialByPlayer: dealInitialCardsByPlayer,
     dealRegularByPlayer: dealRegularCardsByPlayer
 };
