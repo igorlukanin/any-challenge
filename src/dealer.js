@@ -60,8 +60,9 @@ const loadCards = playerId => {
         .all([ hisCards, hisCardsAsCompetitor ])
         .then(([ hisCards, hisCardsAsCompetitor ]) => hisCards.concat(hisCardsAsCompetitor))
         .then(cards => {
-            cards.sort(card => card.creation_date);
-            cards.reverse();
+            cards.sort((one, two) =>
+                (one.priority || one.creation_date.getTime()) -
+                (two.priority || two.creation_date.getTime()));
             return cards;
         })
         .catch(err => res.render('errors/index', { err }));
