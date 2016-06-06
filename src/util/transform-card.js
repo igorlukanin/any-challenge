@@ -15,5 +15,11 @@ const transformScores = card => {
     return card;
 };
 
+// If there's no emoji, add default one
+const transformEmoji = card => {
+    card.emoji = card.emoji || config.get('game.cards.emoji');
+    return card;
+};
 
-module.exports = transformScores;
+
+module.exports = card => transformScores(transformEmoji(card));

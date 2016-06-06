@@ -77,11 +77,9 @@
                 .classed('player__card__back', true)
                 .on('click', flipCard);
 
-        if (data.emoji) {
-            back.append('div')
-                    .classed('player__card__emoji', true)
-                    .text(data.emoji);
-        }
+        back.append('div')
+                .classed('player__card__emoji', true)
+                .text(data.emoji);
 
         var front = card.append('div')
                 .classed('player__card__front', true);

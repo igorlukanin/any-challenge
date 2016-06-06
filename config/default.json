@@ -13,6 +13,10 @@
   "game": {
     "limits": {
       "regular": 3
+    },
+    "cards": {
+      "emoji": "😀",
+      "emoji_note": "smiling face"
     }
   }
 }
