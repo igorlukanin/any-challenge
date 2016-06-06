@@ -44,6 +44,10 @@ body {
     text-decoration: none;
 }
 
+.player__profile__score {
+    font-size: 3vw;
+}
+
 .player__card__wrapper {
     perspective: 1000px;
 }
@@ -181,6 +185,7 @@ body {
     letter-spacing: normal;
 }
 
+.player__profile__score:before,
 .player__card__buttons__button__score:before {
     content: '😀'; /* smiling emoji */
     font-size: 1.5em;

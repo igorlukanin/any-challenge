@@ -1,9 +1,7 @@
 <% extend 'layouts/default.ect' %>
 
 <div id="player" class="player">
-    <div id="cards" class="player__cards">
-        <div class="player__profile"></div>
-    </div>
+    <div id="cards" class="player__cards"></div>
 </div>
 
 <script>
@@ -15,6 +13,7 @@
     socket.on('cards', function(updatedCards) {
         cards = updatedCards;
 
+        drawPlayers();
         drawCards();
     });
 
@@ -25,6 +24,7 @@
             }
         }
 
+        drawPlayers();
         drawCards();
     };
 
@@ -179,19 +179,47 @@
                 .each(redrawCard);
     };
 
-    var drawPlayer = function() {
-        d3.select('#player')
-                .select('.player__profile')
-                .each(function() {
-                    var name = player.name || player.email;
-
-                    d3.select(this).append('a')
-                            .classed('player__profile__name', true)
-                            .attr('href', 'mailto:' + player.email)
-                            .text(name);
-                });
+    var calculateScore = function(cards) {
+        return cards.reduce(function(score, card) {
+            console.log(card);
+            return score +
+                    (card.played ? card.scores.play : 0) +
+                    (card.skipped ? card.scores.skip : 0);
+        }, 0);
     };
 
-    drawCards();
-    drawPlayer();
+    var drawPlayer = function() {
+        var profile = d3.select(this);
+
+        profile.append('a')
+                .classed('player__profile__name', true)
+                .attr('href', 'mailto:' + player.email);
+
+        profile.append('div')
+                .classed('player__profile__score', true);
+    };
+
+    var redrawPlayer = function() {
+        var profile = d3.select(this);
+
+        profile.select('.player__profile__name')
+                .text(player.name || player.email);
+
+        var score = calculateScore(cards);
+
+        profile.select('.player__profile__score')
+                .text(score);
+    };
+
+    var drawPlayers = function() {
+        d3.select('#cards')
+                .selectAll('.player__profile')
+                .data([ player ], function(data) { return data.id; })
+                .each(redrawPlayer)
+            .enter()
+                .append('div')
+                .classed('player__profile', true)
+                .each(drawPlayer)
+                .each(redrawPlayer);
+    };
 </script>
