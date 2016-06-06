@@ -33,6 +33,12 @@ const loadPlayer = id => db.c.then(c => db.players
         return player;
     }));
 
+const setPlayerName = (playerId, name) => db.c.then(c => db.players
+        .get(playerId)
+        .update({ name: name }, { returnChanges: 'always' })
+        .run(c)
+        .then(result => result.changes[0].new_val));
+
 // Choose all previously unchosen competitors for this player
 const loadCompetitor = (playerId, previousCompetitorIds) => db.c.then(c => db.challenges
     .filter(db.r.row('players').contains(playerId))
@@ -55,5 +61,6 @@ module.exports = {
     loadAll: loadPlayers,
     feedAll: feedPlayers,
     load: loadPlayer,
+    setName: setPlayerName,
     chooseCompetitor: loadCompetitor
 };

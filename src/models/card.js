@@ -125,9 +125,19 @@ const flipCard = id => loadCard(id).then(card => {
         .then(result => result.changes[0].new_val));
 });
 
-const playCard = id => loadCard(id).then(card => {
+const playCard = (id, input) => loadCard(id).then(card => {
     if (card.played || card.skipped) {
         return Promise.reject({ message: 'Card already played or skipped', id: id });
+    }
+
+    if (card.type_id == 'initial_name') {
+        if (input != undefined && input.length > 0) {
+            players.setName(card.player, input);
+        }
+        else {
+            console.log('reject');
+            return Promise.reject({ message: 'Input should not be empty for this card', id: id });
+        }
     }
 
     card.played = true;

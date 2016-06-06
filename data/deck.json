@@ -7,8 +7,8 @@
     "emoji_note": "happy person raising one hand",
     "solo": true,
     "skip": false,
-    "name": "Имя",
-    "rules": "Укажи имя, которое увидят другие игроки",
+    "name": "Привет!",
+    "rules": "Как тебя зовут?",
     "score": 5
   },
   {

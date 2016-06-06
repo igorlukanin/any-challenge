@@ -22,6 +22,10 @@ body {
     margin: 7.5vw auto 2.5vw;
 }
 
+.player__name {
+    text-align: center;
+    margin: 2.5vw auto 2.5vw;
+}
 
 .player__cards {
     display: flex;
@@ -95,14 +99,25 @@ body {
 }
 
 .player__card__name {
-    font-weight: bold;
+    font-size: 1.25em;
     text-align: center;
     margin: 5vw 7.5vw;
 }
 
 .player__card__rules {
+    flex-grow: 1;
     font-style: italic;
-    margin: 5vw 7.5vw;
+    margin: 0 7.5vw;
+}
+
+.player__card__input {
+    border: solid 1px #ddd;
+    box-sizing: border-box;
+    display: block;
+    font: normal 4vw 'PT Sans', sans-serif;
+    margin: 2.5vw auto;
+    padding: 0.5em;
+    width: 100%;
 }
 
 .player__card__competitor {

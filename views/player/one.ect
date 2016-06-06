@@ -2,13 +2,15 @@
 
 <div class="player">
     <div class="player__email"><%= @player.email %></div>
+    <div class="player__name"><%= @player.name %></div>
     <div id="cards" class="player__cards"></div>
 </div>
 
 <script>
+    var player = <%- JSON.stringify(@player, null, 2) %>;
     var cards = [];
 
-    var socket = io('http://localhost:3016/cards', { query: 'player=<%= @player.id %>' });
+    var socket = io('http://localhost:3016/cards', { query: 'player=' + player.id });
 
     socket.on('cards', function(updatedCards) {
         cards = updatedCards;
@@ -28,13 +30,14 @@
 
     var fireCardAction = function(data, uri) {
         d3.xhr('/cards/' + data.id + uri)
+                .header("Content-Type", "application/x-www-form-urlencoded")
                 .response(function(request) { return JSON.parse(request.responseText); })
-                .post()
+                .post("input=" + (data.input || ''))
                 .on('load', updateCard);
     };
 
-    var flipCard = function(data) { fireCardAction(data, '/flip'); };
     var playCard = function(data) { fireCardAction(data, '/play'); };
+    var flipCard = function(data) { fireCardAction(data, '/flip'); };
     var winCard = function(data) { fireCardAction(data, '/win'); };
     var looseCard = function(data) { fireCardAction(data, '/loose'); };
     var skipCard = function(data) { fireCardAction(data, '/skip'); };
@@ -52,6 +55,9 @@
     };
 
     var l10n = {
+        placeholders: {
+            name: 'Имя и фамилия'
+        },
         buttons: {
             play: 'Играю',
             win: 'Победил',
@@ -83,9 +89,15 @@
                 .classed('player__card__name', true)
                 .text(data.name);
 
-        front.append('div')
+        var rules = front.append('div')
                 .classed('player__card__rules', true)
                 .text(data.rules);
+
+        if (data.type_id == 'initial_name') {
+            rules.append('input')
+                    .classed('player__card__input', true)
+                    .attr('placeholder', player.name || l10n.placeholders.name);
+        }
 
         if (!data.solo) {
             front.append('div')
@@ -101,7 +113,19 @@
                     .classed('player__card__buttons__button', true)
                     .classed('player__card__buttons__button_solo', true)
                     .text(l10n.buttons.play)
-                    .on('click', playCard);
+                    .on('click', function(data) {
+                        var inputs = rules.selectAll('input');
+
+                        if (!inputs.empty()) {
+                            var value = inputs.property('value');
+
+                            if (value && value.length > 0) {
+                                data.input = value;
+                            }
+                        }
+
+                        playCard(data);
+                    });
 
             appendScore(soloButton, data.scores.play);
         }
