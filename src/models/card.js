@@ -120,7 +120,29 @@ const flipCard = id => loadCard(id).then(card => {
         .get(card.id)
         .update(card, { returnChanges: 'always' })
         .run(c)
-        .then(result => result.changes[0].new_val));
+        .then(result => {
+            const card = result.changes[0].new_val;
+            card.own = true;
+            return card;
+        }));
+});
+
+const flipCardAsCompetitor = id => loadCard(id).then(card => {
+    if (card.played) {
+        return Promise.reject({ message: 'Card already played', id: id });
+    }
+
+    card.competitor_flipped = true;
+
+    return db.c.then(c => db.cards
+        .get(card.id)
+        .update(card, { returnChanges: 'always' })
+        .run(c)
+        .then(result => {
+            const card = result.changes[0].new_val;
+            card.own = false;
+            return card;
+        }));
 });
 
 const playCard = (id, input) => loadCard(id).then(card => {
@@ -162,6 +184,7 @@ module.exports = {
     loadAllByCompetitor: loadCardsByCompetitor,
     feedPlayed: feedPlayedCards,
     flip: flipCard,
+    flipAsCompetitor: flipCardAsCompetitor,
     play: playCard,
     dealInitialByPlayer: dealInitialCardsByPlayer,
     dealRegularByPlayer: dealRegularCardsByPlayer

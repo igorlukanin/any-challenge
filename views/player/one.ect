@@ -37,6 +37,7 @@
     };
 
     var playCard = function(data) { fireCardAction(data, '/play'); };
+    var flipCardAsCompetitor = function(data) { fireCardAction(data, '/flip-as-competitor'); };
     var flipCard = function(data) { fireCardAction(data, '/flip'); };
     var winCard = function(data) { fireCardAction(data, '/win'); };
     var looseCard = function(data) { fireCardAction(data, '/loose'); };
@@ -73,7 +74,7 @@
 
         var back = card.append('div')
                 .classed('player__card__back', true)
-                .on('click', flipCard);
+                .on('click', data.own ? flipCard : flipCardAsCompetitor);
 
         back.append('div')
                 .classed('player__card__emoji', true)
