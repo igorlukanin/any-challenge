@@ -37,7 +37,7 @@ body {
 }
 
 .player__profile {
-    background: #fff;
+    background: #fcfcfc;
     padding: 2.5vw 7.5vw;
     text-align: center;
 }
@@ -165,7 +165,7 @@ body {
 .player__card__buttons__button {
     border-right: solid 1px #ddd;
     cursor: pointer;
-    flex-grow: 1;
+    flex: 1;
     font-size: 3vw;
     font-weight: bold;
     letter-spacing: 0.1em;
