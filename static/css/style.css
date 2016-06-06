@@ -33,11 +33,23 @@ body {
     padding: 5vw 10vw;
 }
 
+.player__profile {
+    background: #fff;
+    padding: 2.5vw 7.5vw;
+    text-align: center;
+}
+
+.player__profile__name {
+    color: inherit;
+    text-decoration: none;
+}
+
 .player__card__wrapper {
     perspective: 1000px;
 }
 
-.player__card {
+.player__card,
+.player__profile {
     border: solid 1px #ddd;
     box-shadow: 0 1.5vw 2.5vw #ccc;
 

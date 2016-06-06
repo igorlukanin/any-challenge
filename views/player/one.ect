@@ -1,9 +1,9 @@
 <% extend 'layouts/default.ect' %>
 
-<div class="player">
-    <div class="player__email"><%= @player.email %></div>
-    <div class="player__name"><%= @player.name %></div>
-    <div id="cards" class="player__cards"></div>
+<div id="player" class="player">
+    <div id="cards" class="player__cards">
+        <div class="player__profile"></div>
+    </div>
 </div>
 
 <script>
@@ -179,5 +179,19 @@
                 .each(redrawCard);
     };
 
+    var drawPlayer = function() {
+        d3.select('#player')
+                .select('.player__profile')
+                .each(function() {
+                    var name = player.name || player.email;
+
+                    d3.select(this).append('a')
+                            .classed('player__profile__name', true)
+                            .attr('href', 'mailto:' + player.email)
+                            .text(name);
+                });
+    };
+
     drawCards();
+    drawPlayer();
 </script>
