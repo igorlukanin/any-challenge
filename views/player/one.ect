@@ -205,7 +205,12 @@
 
     var calculateScore = function(cards) {
         return cards.reduce(function(score, card) {
-            return score + (card.played ? card.scores.play : 0);
+            return score +
+                    (card.played && card.solo ? card.scores.play : 0) +
+                    (card.played && card.own && card.won ? card.scores.win : 0) +
+                    (card.played && card.own && !card.won ? card.scores.loose : 0) +
+                    (card.played && !card.own && card.competitor_won ? card.scores.win : 0) +
+                    (card.played && !card.own && !card.competitor_won ? card.scores.loose : 0);
         }, 0);
     };
 
