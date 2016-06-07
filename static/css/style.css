@@ -112,7 +112,7 @@ body {
 }
 
 .player__card__emoji {
-    font-size: 25vw;
+    font-size: 5em;
     line-height: 80vw;
     text-align: center;
 }
