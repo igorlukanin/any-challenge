@@ -1,4 +1,4 @@
-const Promise = require('Promise');
+const config = require('config');
 const router = require('express').Router();
 const players = require('../models/player');
 
@@ -8,7 +8,13 @@ router.get('/:id', (req, res) => {
 
     players
         .load(id)
-        .then(player => res.render('player/one', { player }))
+        .then(player => res.render('player/one', {
+            player,
+            ws: {
+                host: config.get('ws.host'),
+                port: config.get('ws.port')
+            }
+        }))
         .catch(err => res.render('errors/index', { err }));
 });
 

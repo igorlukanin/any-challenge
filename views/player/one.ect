@@ -5,10 +5,11 @@
 </div>
 
 <script>
+    var ws = <%- JSON.stringify(@ws, null, 2) %>;
     var player = <%- JSON.stringify(@player, null, 2) %>;
     var cards = [];
 
-    var socket = io('http://localhost:3016/cards', { query: 'player=' + player.id });
+    var socket = io('http://' + ws.host + ':' + ws.port + '/cards', { query: 'player=' + player.id });
 
     socket.on('cards', function(updatedCards) {
         cards = updatedCards;
