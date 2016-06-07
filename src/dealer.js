@@ -17,57 +17,14 @@ const addClient = client => clients.push(client);
 
 const removeClient = removedClient => {
     clients = clients.filter(client =>
-        client.handshake.query.player == removedClient.handshake.query.player);
+        client.handshake.query.player != removedClient.handshake.query.player);
 };
 
 const notifyPlayer = (playerId, cards) => clients
     .filter(client => client.handshake.query.player == playerId)
     .forEach(client => client.emit('cards', cards));
 
-const loadCards = playerId => {
-    const hisCards = cards
-        .loadAllByPlayer(playerId)
-        .then(cards => Promise.all(cards.map(card => {
-            card.own = true;
-
-            if (card.solo) {
-                return card;
-            }
-            else {
-                return players
-                    .load(card.competitor)
-                    .then(competitor => {
-                        card.competitor = competitor;
-                        return card;
-                    });
-            }
-        })));
-
-    const hisCardsAsCompetitor = cards
-        .loadAllByCompetitor(playerId)
-        .then(cards => Promise.all(cards.map(card => {
-            return players
-                .load(card.player)
-                .then(player => {
-                    card.own = false;
-                    card.player = player;
-                    return card;
-                });
-        })));
-
-    return Promise
-        .all([ hisCards, hisCardsAsCompetitor ])
-        .then(([ hisCards, hisCardsAsCompetitor ]) => hisCards.concat(hisCardsAsCompetitor))
-        .then(cards => {
-            cards.sort((one, two) =>
-                (one.priority || one.creation_date.getTime()) -
-                (two.priority || two.creation_date.getTime()));
-            return cards;
-        })
-        .catch(err => res.render('errors/index', { err }));
-};
-
-const pushCardsToPlayer = playerId => loadCards(playerId)
+const pushCardsToPlayer = playerId => cards.loadAll(playerId)
     .then(cards => notifyPlayer(playerId, cards));
 
 
@@ -94,25 +51,25 @@ players
             return;
         }
 
-        log.playerInfo(player, 'in game');
+        log.playerInfo(player.id, 'in game');
 
-        const deal = () => cards
-            .dealInitialByPlayer(player.id)
+        const deal = playerId => cards
+            .dealInitialByPlayer(playerId)
             .then(cards => {
                 if (cards.length > 0) {
-                    pushCardsToPlayer(player.id);
+                    pushCardsToPlayer(playerId);
 
                     log.playerInfo(playerId, 'gets ' + cards.length + ' initial card(s)');
                 }
             })
             .catch(err => console.error(err));
 
-        deal();
+        deal(player.id);
     }))
-    .catch(err => console.error(err));
+    .catch(err => log.error(err));
 
 cards
-    .feedPlayed()
+    .feedAll()
     .then(cursor => cursor.each((err, result) => {
         var card = result.new_val;
 
@@ -120,20 +77,34 @@ cards
             return;
         }
 
-        const deal = () => cards
-            .dealRegularByPlayer(card.player)
+        pushCardsToPlayer(card.player);
+
+        if (!card.solo) {
+            pushCardsToPlayer(card.competitor);
+        }
+
+        const deal = playerId => cards
+            .dealRegularByPlayer(playerId)
             .then(cards => {
                 if (cards.length > 0) {
-                    pushCardsToPlayer(card.player);
-                    
+                    pushCardsToPlayer(playerId);
+
                     log.playerInfo(playerId, 'gets ' + cards.length + ' regular card(s)');
 
                     // Try to deal one more card
-                    deal();
+                    deal(playerId);
                 }
             })
             .catch(err => console.error(err));
 
-        deal();
+        if (card.played) {
+            if (card.player) {
+                deal(card.player);
+            }
+
+            if (card.competitor) {
+                deal(card.competitor);
+            }
+        }
     }))
     .catch(err => console.error(err));

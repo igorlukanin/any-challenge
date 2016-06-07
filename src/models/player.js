@@ -35,9 +35,8 @@ const loadPlayer = id => db.c.then(c => db.players
 
 const setPlayerName = (playerId, name) => db.c.then(c => db.players
         .get(playerId)
-        .update({ name: name }, { returnChanges: 'always' })
-        .run(c)
-        .then(result => result.changes[0].new_val));
+        .update({ name: name })
+        .run(c));
 
 // Choose all previously unchosen competitors for this player
 const loadCompetitor = (playerId, previousCompetitorIds) => db.c.then(c => db.challenges

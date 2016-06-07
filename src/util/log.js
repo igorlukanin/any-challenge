@@ -12,7 +12,7 @@ const console = new debug({
 
 const logAppState = (app, message) => console.info(app + ' ' + message);
 
-const logPlayerInfo = (player, message) => console.info((player.email ? player.email : player) + ' ' + message);
+const logPlayerInfo = (playerId, message) => console.info(playerId + ' ' + message);
 
 
 module.exports = {

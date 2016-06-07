@@ -200,6 +200,20 @@ body {
     left: -0.1em;
 }
 
+.player__card__buttons__button_won {
+    background: #efe !important;
+}
+
+.player__card__buttons__button_lost {
+    background: #fee !important;
+}
+
+.player__card__competitor_choice,
+.player__card__buttons__button_competitor_won,
+.player__card__buttons__button_competitor_lost {
+    background: #eee;
+}
+
 .player__card__buttons__button_solo .player__card__buttons__button__score:before,
 .player__card__buttons__button_win .player__card__buttons__button__score:before {
     content: '😀'; /* smiling face */

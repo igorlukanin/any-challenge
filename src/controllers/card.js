@@ -4,9 +4,13 @@ const cards = require('../models/card');
 
 
 const actions = [
+    ['/:id/play', cards.play],
     ['/:id/flip', cards.flip],
+    ['/:id/win', cards.win],
+    ['/:id/loose', cards.loose],
     ['/:id/flip-as-competitor', cards.flipAsCompetitor],
-    ['/:id/play', cards.play]
+    ['/:id/win-as-competitor', cards.winAsCompetitor],
+    ['/:id/loose-as-competitor', cards.looseAsCompetitor],
 ];
 
 actions.forEach(action => {
@@ -15,7 +19,7 @@ actions.forEach(action => {
         const input = req.body.input;
 
         action[1](id, input)
-            .then(card => res.json(card))
+            .then(card => res.status(200).send())
             .catch(err => res.status(400).json(err));
     });
 });

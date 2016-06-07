@@ -37,19 +37,17 @@
     };
 
     var playCard = function(data) { fireCardAction(data, '/play'); };
-    var flipCardAsCompetitor = function(data) { fireCardAction(data, '/flip-as-competitor'); };
     var flipCard = function(data) { fireCardAction(data, '/flip'); };
     var winCard = function(data) { fireCardAction(data, '/win'); };
     var looseCard = function(data) { fireCardAction(data, '/loose'); };
-
-    var prepareScore = function(score) {
-        return score == 0 ? score : score < 0 ? '–' + -score : '+' + score;
-    };
+    var flipCardAsCompetitor = function(data) { fireCardAction(data, '/flip-as-competitor'); };
+    var winCardAsCompetitor = function(data) { fireCardAction(data, '/win-as-competitor'); };
+    var looseCardAsCompetitor = function(data) { fireCardAction(data, '/loose-as-competitor'); };
 
     var appendScore = function(button, score) {
         button.append('span')
                 .classed('player__card__buttons__button__score', true)
-                .text(prepareScore(score));
+                .text(score);
     };
 
     var l10n = {
@@ -57,7 +55,9 @@
             name: 'Имя и фамилия'
         },
         labels: {
-            competitor: 'Соперник'
+            competitor: 'Соперник',
+            competitorWon: 'Соперник считает, что ты победил',
+            competitorLost: 'Соперник считает, что ты проиграл'
         },
         buttons: {
             play: 'Сохранить',
@@ -109,8 +109,7 @@
                     .classed('player__card__competitor', true);
 
             competitor.append('div')
-                    .classed('player__card__competitor__note', true)
-                    .text(l10n.labels.competitor);
+                    .classed('player__card__competitor__note', true);
 
             competitor.append('a')
                     .classed('player__card__competitor__name', true)
@@ -147,7 +146,7 @@
                     .classed('player__card__buttons__button', true)
                     .classed('player__card__buttons__button_win', true)
                     .text(l10n.buttons.win)
-                    .on('click', winCard);
+                    .on('click', data.own ? winCard : winCardAsCompetitor);
 
             appendScore(winButton, data.scores.win);
 
@@ -155,7 +154,7 @@
                     .classed('player__card__buttons__button', true)
                     .classed('player__card__buttons__button_loose', true)
                     .text(l10n.buttons.loose)
-                    .on('click', looseCard);
+                    .on('click', data.own ? looseCard : looseCardAsCompetitor);
 
             appendScore(looseButton, data.scores.loose);
         }
@@ -167,6 +166,29 @@
                 .classed('player__card_regular', data.type == 'regular')
                 .classed('player__card_flipped', data.own ? data.flipped : data.competitor_flipped)
                 .classed('player__card_played', data.played);
+
+        var won = data.own ? data.won != undefined && data.won : data.competitor_won != undefined && data.competitor_won;
+        var lost = data.own ? data.won != undefined && !data.won : data.competitor_won != undefined && !data.competitor_won;
+        var competitorWon = data.own ? data.competitor_won != undefined && !data.competitor_won : data.won != undefined && !data.won;
+        var competitorLost = data.own ? data.competitor_won != undefined && data.competitor_won : data.won != undefined && data.won;
+
+        var competitorText = competitorWon ? l10n.labels.competitorWon :
+                competitorLost ? l10n.labels.competitorLost :
+                l10n.labels.competitor;
+
+        card.select('.player__card__competitor')
+                .classed('player__card__competitor_choice', competitorWon || competitorLost);
+
+        card.select('.player__card__competitor__note')
+                .text(competitorText);
+
+        card.select('.player__card__buttons__button_win')
+                .classed('player__card__buttons__button_won', won)
+                .classed('player__card__buttons__button_competitor_won', competitorWon);
+
+        card.select('.player__card__buttons__button_loose')
+                .classed('player__card__buttons__button_lost', lost)
+                .classed('player__card__buttons__button_competitor_lost', competitorLost);
     };
 
     var drawCards = function() {
@@ -205,7 +227,7 @@
                 .text(player.name || player.email);
 
         profile.select('.player__profile__score')
-                .text(prepareScore(calculateScore(cards)));
+                .text(calculateScore(cards));
     };
 
     var drawPlayers = function() {

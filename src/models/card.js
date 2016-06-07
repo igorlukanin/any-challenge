@@ -36,23 +36,63 @@ const loadCardsByCompetitor = playerId => db.c.then(c => db.cards
     .run(c)
     .then(cursor => cursor.toArray()));
 
+const loadAllCards = playerId => {
+    const hisCards = loadCardsByPlayer(playerId)
+        .then(cards => Promise.all(cards.map(card => {
+            card.own = true;
+
+            return card.solo ? card : players
+                .load(card.competitor)
+                .then(competitor => {
+                    card.competitor = competitor;
+                    return card;
+                });
+        })));
+
+    const hisCardsAsCompetitor = loadCardsByCompetitor(playerId)
+        .then(cards => Promise.all(cards.map(card => players
+            .load(card.player)
+            .then(player => {
+                card.own = false;
+                card.player = player;
+                return card;
+        }))));
+
+    return Promise
+        .all([ hisCards, hisCardsAsCompetitor ])
+        .then(([ hisCards, hisCardsAsCompetitor ]) => hisCards.concat(hisCardsAsCompetitor))
+        .then(cards => {
+            cards.sort((one, two) =>
+            (one.priority || one.creation_date.getTime()) -
+            (two.priority || two.creation_date.getTime()));
+            return cards;
+        });
+};
+
 const dealInitialCardsByPlayer = playerId => loadCardsByPlayer(playerId)
     .then(cards => createCardsByPlayer(playerId, dealInitialCards(cards)));
 
-const dealRegularCardsByPlayer = playerId => loadCardsByPlayer(playerId).then(cards => {
-    const regularCards = cards.filter(isRegular);
+const dealRegularCardsByPlayer = playerId => loadAllCards(playerId).then(cards => {
+    const initialCards = cards.filter(isInitial);
+    const unplayedInitialCardsCount = initialCards.filter(card => !card.played).length;
 
-    if (config.get('game.limits.regular') - regularCards.filter(card => !card.played).length > 0) {
-        const previousCompetitorIds = regularCards.map(card => card.competitor);
+    const regularCards = cards.filter(isRegular);
+    const unplayedRegularCardsCount = regularCards.filter(card => !card.played).length;
+
+    if (unplayedInitialCardsCount == 0 && (config.get('game.limits.regular') - unplayedRegularCardsCount) > 0) {
+        const previousCompetitorIds = regularCards
+            .filter(card => card.competitor != undefined)
+            .map(card => card.competitor.id != undefined ? card.competitor.id : card.competitor);
+        
         const competitor = players.chooseCompetitor(playerId, previousCompetitorIds);
         const hisCards = competitor.then(competitor => loadCardsByPlayer(competitor.id));
 
         return Promise
             .all([ competitor, hisCards ])
             .then(([ competitor, hisCards ]) => {
-                const allRegularCards = regularCards
-                    .concat(hisCards)
-                    .filter(isRegular);
+                const allRegularCards = hisCards
+                    .filter(isRegular)
+                    .concat(regularCards);
 
                 const card = dealOneRegularCard(cards, allRegularCards);
 
@@ -109,72 +149,73 @@ const loadCard = id => db.c.then(c => db.cards
         return card;
     }));
 
-const flipCard = id => loadCard(id).then(card => {
+const applyActionToCard = (id, action, input) => loadCard(id).then(card => {
     if (card.played) {
         return Promise.reject({ message: 'Card already played', id: id });
     }
-
-    card.flipped = true;
+    
+    action(card, input);
 
     return db.c.then(c => db.cards
         .get(card.id)
-        .update(card, { returnChanges: 'always' })
-        .run(c)
-        .then(result => {
-            const card = result.changes[0].new_val;
-            card.own = true;
-            return card;
-        }));
+        .update(card)
+        .run(c));
 });
 
-const flipCardAsCompetitor = id => loadCard(id).then(card => {
-    if (card.played) {
-        return Promise.reject({ message: 'Card already played', id: id });
-    }
-
-    card.competitor_flipped = true;
-
-    return db.c.then(c => db.cards
-        .get(card.id)
-        .update(card, { returnChanges: 'always' })
-        .run(c)
-        .then(result => {
-            const card = result.changes[0].new_val;
-            card.own = false;
-            return card;
-        }));
-});
-
-const playCard = (id, input) => loadCard(id).then(card => {
-    if (card.played) {
-        return Promise.reject({ message: 'Card already played', id: id });
-    }
-
+const playCard = (id, input) => applyActionToCard(id, function(card, input) {
     if (card.type_id == 'initial_name') {
         if (input != undefined && input.length > 0) {
             players.setName(card.player, input);
         }
         else {
-            console.log('reject');
             return Promise.reject({ message: 'Input should not be empty for this card', id: id });
         }
     }
 
     card.played = true;
+}, input);
 
-    return db.c.then(c => db.cards
-        .get(card.id)
-        .update(card, { returnChanges: 'always' })
-        .run(c)
-        .then(result => {
-            const card = result.changes[0].new_val;
-            card.own = true;
-            return card;
-        }));
+const flipCard = id => applyActionToCard(id, function(card) {
+    card.flipped = true;
 });
 
-const feedPlayedCards = () => db.c.then(c => db.cards
-    .filter(db.r.row('played').default(false).eq(true))
+const flipCardAsCompetitor = id => applyActionToCard(id, function(card) {
+    card.competitor_flipped = true;
+});
+
+const winCard = id => applyActionToCard(id, function(card) {
+    card.won = true;
+
+    if (card.competitor_won != undefined && !card.competitor_won) {
+        card.played = true;
+    }
+});
+
+const winCardAsCompetitor = id => applyActionToCard(id, function(card) {
+    card.competitor_won = true;
+
+    if (card.won != undefined && !card.won) {
+        card.played = true;
+    }
+});
+
+const looseCard = id => applyActionToCard(id, function(card) {
+    card.won = false;
+
+    if (card.competitor_won != undefined && card.competitor_won) {
+        card.played = true;
+    }
+});
+
+const looseCardAsCompetitor = id => applyActionToCard(id, function(card) {
+    card.competitor_won = false;
+
+    if (card.won != undefined && card.won) {
+        card.played = true;
+    }
+});
+
+const feedCards = () => db.c.then(c => db.cards
     .changes({ includeInitial: true })
     .run(c));
 
@@ -182,10 +223,15 @@ const feedPlayedCards = () => db.c.then(c => db.cards
 module.exports = {
     loadAllByPlayer: loadCardsByPlayer,
     loadAllByCompetitor: loadCardsByCompetitor,
-    feedPlayed: feedPlayedCards,
-    flip: flipCard,
-    flipAsCompetitor: flipCardAsCompetitor,
+    loadAll: loadAllCards,
+    feedAll: feedCards,
     play: playCard,
+    flip: flipCard,
+    win: winCard,
+    loose: looseCard,
+    flipAsCompetitor: flipCardAsCompetitor,
+    winAsCompetitor: winCardAsCompetitor,
+    looseAsCompetitor: looseCardAsCompetitor,
     dealInitialByPlayer: dealInitialCardsByPlayer,
     dealRegularByPlayer: dealRegularCardsByPlayer
 };
