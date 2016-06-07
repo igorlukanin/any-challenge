@@ -1,4 +1,3 @@
-const Promise = require('Promise');
 const router = require('express').Router();
 const cards = require('../models/card');
 

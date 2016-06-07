@@ -1,6 +1,5 @@
 const Promise = require('promise');
 const db = require('../util/db');
-const players = require('./player');
 
 
 const createChallenge = (title, playerIds) => db.c.then(c => db.challenges

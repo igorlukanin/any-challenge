@@ -1,6 +1,5 @@
 const config = require('config');
 const io = require('socket.io');
-const Promise = require('Promise');
 
 const cards = require('./models/card');
 const players = require('./models/player');

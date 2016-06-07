@@ -1,5 +1,4 @@
 var config = require('config'),
-    Promise = require('promise'),
     r = require('rethinkdb'),
 
     tables = [ 'challenges', 'players', 'cards' ];

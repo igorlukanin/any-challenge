@@ -1,4 +1,4 @@
-const Promise = require('Promise');
+const Promise = require('promise');
 const router = require('express').Router();
 const challenges = require('../models/challenge');
 const players = require('../models/player');
