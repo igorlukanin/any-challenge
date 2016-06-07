@@ -5,7 +5,6 @@ const Promise = require('Promise');
 const cards = require('./models/card');
 const players = require('./models/player');
 const log = require('./util/log');
-const pronounce = require('./util/pronounce');
 
 
 process.on('uncaughtException', (err) => console.error(err.stack));
@@ -103,7 +102,7 @@ players
                 if (cards.length > 0) {
                     pushCardsToPlayer(player.id);
 
-                    log.playerInfo(player, 'gets ' + pronounce(cards.length, 'initial card'));
+                    log.playerInfo(playerId, 'gets ' + cards.length + ' initial card(s)');
                 }
             })
             .catch(err => console.error(err));
@@ -127,7 +126,7 @@ cards
                 if (cards.length > 0) {
                     pushCardsToPlayer(card.player);
                     
-                    log.playerInfo(card.player, 'gets ' + pronounce(cards.length, 'regular card'));
+                    log.playerInfo(playerId, 'gets ' + cards.length + ' regular card(s)');
 
                     // Try to deal one more card
                     deal();
