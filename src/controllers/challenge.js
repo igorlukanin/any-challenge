@@ -4,7 +4,8 @@ const challenges = require('../models/challenge');
 const players = require('../models/player');
 
 
-const parseEmails = emails => emails.split(/;\r?\n\r?/);
+const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
+const parseEmails = emails => emails.match(emailRegex);
 
 const parseParams = (title, emailString) => new Promise((resolve, reject) => {
     if (title == undefined || title.length == 0) { reject('title'); }
@@ -26,7 +27,7 @@ router.post('/', (req, res) => {
     parseParams(title, emails)
         .then(({ title, emails }) => Promise.all([ title, players.createAll(emails) ]))
         .then(([ title, playerIds ]) => challenges.create(title, playerIds))
-        .then(challengeId => res.redirect('/challenge/' + challengeId))
+        .then(challengeId => res.redirect('/challenges/' + challengeId))
         .catch(err => res.render('errors/index', { err }));
 });
 
