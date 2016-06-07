@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "author": "Igor Lukanin",
   "scripts": {
-    "website": "NODE_ENV=production node --harmony_destructuring src/website.js",
-    "dealer": "NODE_ENV=production node --harmony_destructuring src/dealer.js"
+    "website": "NODE_ENV=production node src/website.js",
+    "dealer": "NODE_ENV=production node src/dealer.js"
   },
   "dependencies": {
     "body-parser": "^1.15.1",
