@@ -91,6 +91,7 @@ body {
 }
 
 .player__profile__played-cards__placeholder {
+    background-color: #f6f6f6;
     margin-bottom: 2vw;
 }
 
