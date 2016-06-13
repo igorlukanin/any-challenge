@@ -79,7 +79,7 @@
 
         back.append('div')
                 .classed('player__card__emoji', true)
-                .text(data.emoji);
+                .classed('emoji_' + data.emoji, true);
 
         var front = card.append('div')
                 .classed('player__card__front', true);

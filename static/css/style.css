@@ -48,11 +48,17 @@ body {
 }
 
 .player__profile__score {
-    font-size: 3vw;
+    color: #666;
+    font-size: 4vw;
 }
 
 .player__profile__score:before {
-    content: '🏆'; /* cup */
+    content: "";
+    display: inline-block;
+    background: url("https://twemoji.maxcdn.com/svg/1f3c6.svg") no-repeat center center;
+    background-size: 5vw;
+    width: 5vw;
+    height: 5vw;
 }
 
 .player__card__wrapper {
@@ -112,9 +118,9 @@ body {
 }
 
 .player__card__emoji {
-    font-size: 5em;
-    line-height: 80vw;
-    text-align: center;
+    background-size: 50% 50% !important;
+    width: 80vw;
+    height: 80vw;
 }
 
 .player__card__name {
@@ -216,9 +222,19 @@ body {
 
 .player__card__buttons__button_solo .player__card__buttons__button__score:before,
 .player__card__buttons__button_win .player__card__buttons__button__score:before {
-    content: '😀'; /* smiling face */
+    content: "";
+    display: inline-block;
+    background: url("https://twemoji.maxcdn.com/svg/1f600.svg") no-repeat center center;
+    background-size: 5vw;
+    width: 5vw;
+    height: 5vw;
 }
 
 .player__card__buttons__button_loose .player__card__buttons__button__score:before {
-    content: '😦'; /* sad face */
+    content: "";
+    display: inline-block;
+    background: url("https://twemoji.maxcdn.com/svg/1f62e.svg") no-repeat center center;
+    background-size: 5vw;
+    width: 5vw;
+    height: 5vw;
 }
