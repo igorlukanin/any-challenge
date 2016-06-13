@@ -57,6 +57,8 @@
         },
         labels: {
             competitor: 'Соперник',
+            competitorWonOrNot: 'Соперник пока не согласился',
+            competitorLostOrNot: 'Соперник пока не согласился',
             competitorWon: 'Соперник считает, что ты победил',
             competitorLost: 'Соперник считает, что ты проиграл'
         },
@@ -175,6 +177,8 @@
 
         var competitorText = competitorWon ? l10n.labels.competitorWon :
                 competitorLost ? l10n.labels.competitorLost :
+                won ? l10n.labels.competitorWonOrNot :
+                lost ? l10n.labels.competitorLostOrNot :
                 l10n.labels.competitor;
 
         card.select('.player__card__competitor')
