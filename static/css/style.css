@@ -37,8 +37,8 @@ body {
 }
 
 .player__profile {
-    background: #fcfcfc;
-    padding: 2.5vw 7.5vw;
+    background: #f6f6f6;
+    padding-top: 2.5vw;
     text-align: center;
 }
 
@@ -47,18 +47,97 @@ body {
     text-decoration: none;
 }
 
-.player__profile__score {
+.player__profile__numbers {
+    display: flex;
+    margin: auto;
+    margin-bottom: 2vw;
+    width: 30%;
+}
+
+.player__profile__score,
+.player__profile__cards,
+.player__profile__played-cards__card {
     color: #666;
+    flex-grow: 1;
     font-size: 4vw;
 }
 
 .player__profile__score:before {
     content: "";
     display: inline-block;
-    background: url("https://twemoji.maxcdn.com/svg/1f3c6.svg") no-repeat center center;
-    background-size: 5vw;
+    background: url("https://twemoji.maxcdn.com/svg/1f3c6.svg") no-repeat center top;
+    background-size: 4vw;
     width: 5vw;
     height: 5vw;
+}
+
+.player__profile__cards:before {
+    content: "";
+    display: inline-block;
+    background: url("https://twemoji.maxcdn.com/svg/1f3b4.svg") no-repeat center bottom;
+    background-size: 4vw;
+    width: 5vw;
+    height: 5vw;
+}
+
+.player__profile__played-cards {
+    background: #fff;
+}
+
+.player__profile__played-cards__card__vs,
+.player__profile__played-cards__placeholder {
+    color: #999;
+    padding: 1vw;
+}
+
+.player__profile__played-cards__placeholder {
+    margin-bottom: 2vw;
+}
+
+.player__profile__played-cards__card {
+    background-size: 4vw !important;
+    background-position-x: 7.5vw !important;
+    border-top: dotted 1px #ddd;
+    display: flex;
+    text-align: left;
+    padding: 1vw 0 1vw 13.5vw;
+    font-size: 3vw;
+}
+
+.player__profile__played-cards__card__text {
+    width: 52.5vw;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+
+.player__profile__played-cards__card__text:after {
+    position: absolute;
+    display: inline-block;
+    right: 13.5vw;
+    width: 20vw;
+    height: 6vw;
+    content: '';
+    background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+    background: linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+}​
+
+.player__profile__played-cards__card__score {
+    position: absolute;
+    margin-top: 0.5vw;
+}
+
+.player__profile__played-cards__card__score:before {
+    content: "";
+    display: inline-block;
+    background: url("https://twemoji.maxcdn.com/svg/1f3c6.svg") no-repeat center bottom;
+    background-size: 3vw;
+    width: 4vw;
+    height: 4vw;
 }
 
 .player__card__wrapper {

@@ -53,7 +53,8 @@
 
     var l10n = {
         placeholders: {
-            name: 'Имя и фамилия'
+            name: 'Имя и фамилия',
+            cards: 'Играй и зарабатывай очки!'
         },
         labels: {
             competitor: 'Соперник',
@@ -208,14 +209,23 @@
                 .each(redrawCard);
     };
 
-    var calculateScore = function(cards) {
+    var calculateScoreForCard = function(card) {
+        return (card.played && card.solo ? card.scores.play : 0) +
+                (card.played && card.own && card.won ? card.scores.win : 0) +
+                (card.played && card.own && !card.won ? card.scores.loose : 0) +
+                (card.played && !card.own && card.competitor_won ? card.scores.win : 0) +
+                (card.played && !card.own && !card.competitor_won ? card.scores.loose : 0);
+    };
+
+    var calculateScoreForCards = function(cards) {
         return cards.reduce(function(score, card) {
-            return score +
-                    (card.played && card.solo ? card.scores.play : 0) +
-                    (card.played && card.own && card.won ? card.scores.win : 0) +
-                    (card.played && card.own && !card.won ? card.scores.loose : 0) +
-                    (card.played && !card.own && card.competitor_won ? card.scores.win : 0) +
-                    (card.played && !card.own && !card.competitor_won ? card.scores.loose : 0);
+            return score + calculateScoreForCard(card);
+        }, 0);
+    };
+
+    var calculatePlayedCards = function(cards) {
+        return cards.reduce(function(count, card) {
+            return count + (card.played ? 1 : 0);
         }, 0);
     };
 
@@ -226,8 +236,21 @@
                 .classed('player__profile__name', true)
                 .attr('href', 'mailto:' + player.email);
 
-        profile.append('div')
+        var numbers = profile.append('div')
+                .classed('player__profile__numbers', true);
+
+        numbers.append('div')
+                .classed('player__profile__cards', true);
+
+        numbers.append('div')
                 .classed('player__profile__score', true);
+
+        var playedCards = profile.append('div')
+                .classed('player__profile__played-cards', true);
+
+        playedCards.append('div')
+                .classed('player__profile__played-cards__placeholder', true)
+                .text(l10n.placeholders.cards);
     };
 
     var redrawPlayer = function() {
@@ -237,7 +260,47 @@
                 .text(player.name || player.email);
 
         profile.select('.player__profile__score')
-                .text(calculateScore(cards));
+                .text(calculateScoreForCards(cards));
+
+        profile.select('.player__profile__cards')
+                .text(calculatePlayedCards(cards));
+
+        var playedCards = cards.filter(function(card) {
+            return card.played;
+        });
+
+        if (playedCards.length > 0) {
+            var playedCardsElement = profile.select('.player__profile__played-cards');
+
+            playedCardsElement.html("");
+
+            playedCards.forEach(function(data) {
+                var card = playedCardsElement.append('div')
+                        .classed('player__profile__played-cards__card', true)
+                        .classed('emoji_' + data.emoji, true);
+
+                var text = card.append('span')
+                        .classed('player__profile__played-cards__card__text', true)
+                        .text(data.name);
+
+                var score = calculateScoreForCard(data);
+
+                if (score > 0) {
+                    card.append('span')
+                            .classed('player__profile__played-cards__card__score', true)
+                            .text(score);
+                }
+
+                if (!data.solo) {
+                    text.append('span')
+                            .classed('player__profile__played-cards__card__vs', true)
+                            .text('vs.');
+
+                    text.append('span')
+                            .text(data.own ? (data.competitor.name || data.competitor.email) : (data.player.name || data.player.email));
+                }
+            });
+        }
     };
 
     var drawPlayers = function() {
