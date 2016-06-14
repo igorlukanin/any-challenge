@@ -17,7 +17,7 @@
     "solo": true,
     "name": "Селфи",
     "rules": "Сделай селфи, чтобы другие игроки смогли тебя узнать",
-    "score": 10
+    "score": 5
   },
   {
     "type": "initial",
@@ -27,10 +27,10 @@
     "solo": true,
     "name": "Телефон",
     "rules": "Укажи телефон, чтобы другие игроки могли позвонить. 11 цифр, без изысков",
-    "score": 10
+    "score": 5
   },
   {
-    "type": "initial_disabled",
+    "type": "initial",
     "type_id": "initial_telegram",
     "priority": 4,
     "emoji": "speech-balloon",

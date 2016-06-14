@@ -238,9 +238,8 @@ a, a:visited {
 
 .player__card__competitor__note,
 .player__card__competitor__name,
-.player__card__competitor__phone {
+.player__card__competitor__contacts {
     display: block;
-    text-decoration: none;
 }
 
 .player__card__competitor__note {
@@ -255,8 +254,14 @@ a, a:visited {
     color: inherit;
 }
 
-.player__card__competitor__phone {
+.player__card__competitor__contacts {
+    display: flex;
+}
+
+.player__card__competitor__phone,
+.player__card__competitor__telegram {
     font-size: 3vw;
+    padding-right: 3vw;
 }
 
 .player__card__buttons {
