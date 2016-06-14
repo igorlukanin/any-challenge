@@ -1,6 +1,6 @@
 {
   "name": "any-challenge",
-  "version": "0.0.1",
+  "version": "0.2",
   "author": "Igor Lukanin",
   "scripts": {
     "website": "NODE_ENV=production node src/website.js",
