@@ -173,8 +173,7 @@ const playCard = (id, input) => applyActionToCard(id, function(card, input) {
     }
     else if (card.type_id == 'initial_phone') {
         if (input != undefined && input.length > 0) {
-
-            input = input.replace(/\D/g, '')
+            input = input.replace(/\D/g, '');
 
             if (input.length == 11) {
                 players.setPhone(card.player, input);

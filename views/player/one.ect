@@ -9,13 +9,19 @@
     var player = <%- JSON.stringify(@player, null, 2) %>;
     var cards = [];
 
-    var socket = io('http://' + ws.host + ':' + ws.port + '/cards', { query: 'player=' + player.id });
+    var socket = io('http://' + ws.host + ':' + ws.port, { query: 'player=' + player.id });
 
     socket.on('cards', function(updatedCards) {
         cards = updatedCards;
 
         drawPlayers();
         drawCards();
+    });
+
+    socket.on('player', function(updatedPlayer) {
+        player = updatedPlayer;
+
+        drawPlayers();
     });
 
     var updateCard = function(card) {
@@ -131,16 +137,10 @@
                     .classed('player__card__competitor__note', true);
 
             competitor.append('a')
-                    .classed('player__card__competitor__name', true)
-                    .attr('href', 'mailto:' + (data.own ? data.competitor.email : data.player.email))
-                    .text(data.own ? (data.competitor.name || data.competitor.email) : (data.player.name || data.player.email));
+                    .classed('player__card__competitor__name', true);
 
-            if (data.own ? data.competitor.phone != undefined : data.player.phone != undefined) {
-                competitor.append('a')
-                        .classed('player__card__competitor__phone', true)
-                        .attr('href', 'tel:' + (data.own ? data.competitor.phone : data.player.phone))
-                        .text(formatPhone(data.own ? data.competitor.phone : data.player.phone));
-            }
+            competitor.append('a')
+                    .classed('player__card__competitor__phone', true);
         }
 
         var buttons = front.append('div')
@@ -193,30 +193,42 @@
                 .classed('player__card_flipped', data.own ? data.flipped : data.competitor_flipped)
                 .classed('player__card_played', data.played);
 
-        var won = data.own ? data.won != undefined && data.won : data.competitor_won != undefined && data.competitor_won;
-        var lost = data.own ? data.won != undefined && !data.won : data.competitor_won != undefined && !data.competitor_won;
-        var competitorWon = data.own ? data.competitor_won != undefined && !data.competitor_won : data.won != undefined && !data.won;
-        var competitorLost = data.own ? data.competitor_won != undefined && data.competitor_won : data.won != undefined && data.won;
+        if (!data.solo) {
+            var won = data.own ? data.won != undefined && data.won : data.competitor_won != undefined && data.competitor_won;
+            var lost = data.own ? data.won != undefined && !data.won : data.competitor_won != undefined && !data.competitor_won;
+            var competitorWon = data.own ? data.competitor_won != undefined && !data.competitor_won : data.won != undefined && !data.won;
+            var competitorLost = data.own ? data.competitor_won != undefined && data.competitor_won : data.won != undefined && data.won;
 
-        var competitorText = competitorWon ? l10n.labels.competitorWon :
-                competitorLost ? l10n.labels.competitorLost :
-                won ? l10n.labels.competitorWonOrNot :
-                lost ? l10n.labels.competitorLostOrNot :
-                l10n.labels.competitor;
+            var competitorText = competitorWon ? l10n.labels.competitorWon :
+                    competitorLost ? l10n.labels.competitorLost :
+                    won ? l10n.labels.competitorWonOrNot :
+                    lost ? l10n.labels.competitorLostOrNot :
+                    l10n.labels.competitor;
 
-        card.select('.player__card__competitor')
-                .classed('player__card__competitor_choice', competitorWon || competitorLost);
+            card.select('.player__card__competitor')
+                    .classed('player__card__competitor_choice', competitorWon || competitorLost);
 
-        card.select('.player__card__competitor__note')
-                .text(competitorText);
+            card.select('.player__card__competitor__note')
+                    .text(competitorText);
 
-        card.select('.player__card__buttons__button_win')
-                .classed('player__card__buttons__button_won', won)
-                .classed('player__card__buttons__button_competitor_won', competitorWon);
+            card.select('.player__card__competitor__name')
+                    .attr('href', 'mailto:' + (data.own ? data.competitor.email : data.player.email))
+                    .text(data.own ? (data.competitor.name || data.competitor.email) : (data.player.name || data.player.email));
 
-        card.select('.player__card__buttons__button_loose')
-                .classed('player__card__buttons__button_lost', lost)
-                .classed('player__card__buttons__button_competitor_lost', competitorLost);
+            if (data.own ? data.competitor.phone != undefined : data.player.phone != undefined) {
+                card.select('.player__card__competitor__phone')
+                        .attr('href', 'tel:' + (data.own ? data.competitor.phone : data.player.phone))
+                        .text(formatPhone(data.own ? data.competitor.phone : data.player.phone));
+            }
+
+            card.select('.player__card__buttons__button_win')
+                    .classed('player__card__buttons__button_won', won)
+                    .classed('player__card__buttons__button_competitor_won', competitorWon);
+
+            card.select('.player__card__buttons__button_loose')
+                    .classed('player__card__buttons__button_lost', lost)
+                    .classed('player__card__buttons__button_competitor_lost', competitorLost);
+        }
     };
 
     var drawCards = function() {

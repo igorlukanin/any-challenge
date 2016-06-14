@@ -19,19 +19,21 @@ const removeClient = removedClient => {
         client.handshake.query.player != removedClient.handshake.query.player);
 };
 
-const notifyPlayer = (playerId, cards) => clients
+const notifyPlayer = (playerId, namespace, data) => clients
     .filter(client => client.handshake.query.player == playerId)
-    .forEach(client => client.emit('cards', cards));
+    .forEach(client => client.emit(namespace, data));
 
 const pushCardsToPlayer = playerId => cards.loadAll(playerId)
-    .then(cards => notifyPlayer(playerId, cards));
+    .then(cards => notifyPlayer(playerId, 'cards', cards));
+
+const pushProfileUpdateToPlayer = playerId => players.load(playerId)
+    .then(player => notifyPlayer(playerId, 'player', player));
 
 
 log.appState('dealer', 'ready to deal cards');
 
 io()
     .listen(config.get('ws.port'))
-    .of('/cards')
     .on('connection', socket => {
         const playerId = socket.handshake.query.player;
 
@@ -77,6 +79,14 @@ cards
         }
 
         pushCardsToPlayer(card.player);
+
+        if (card.type == 'initial') {
+            pushProfileUpdateToPlayer(card.player);
+
+            cards.loadAllByCompetitor(card.player).then(cards => cards.forEach(card => {
+                pushCardsToPlayer(card.player);
+            }));
+        }
 
         if (!card.solo) {
             pushCardsToPlayer(card.competitor);
