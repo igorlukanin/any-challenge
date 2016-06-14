@@ -142,10 +142,12 @@
                     .classed('player__card__competitor__contacts', true);
 
             contacts.append('a')
-                    .classed('player__card__competitor__phone', true);
+                    .classed('player__card__competitor__phone', true)
+                    .attr('target', '_blank');
 
             contacts.append('a')
-                    .classed('player__card__competitor__telegram', true);
+                    .classed('player__card__competitor__telegram', true)
+                    .attr('target', '_blank');
         }
 
         var buttons = front.append('div')
