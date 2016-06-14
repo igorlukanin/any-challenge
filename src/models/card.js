@@ -171,6 +171,22 @@ const playCard = (id, input) => applyActionToCard(id, function(card, input) {
             return Promise.reject({ message: 'Input should not be empty for this card', id: id });
         }
     }
+    else if (card.type_id == 'initial_phone') {
+        if (input != undefined && input.length > 0) {
+
+            input = input.replace(/\D/g, '')
+
+            if (input.length == 11) {
+                players.setPhone(card.player, input);
+            }
+            else {
+                return Promise.reject({ message: 'Input contain exactly 11 numbers for this card', id: id });
+            }
+        }
+        else {
+            return Promise.reject({ message: 'Input should not be empty for this card', id: id });
+        }
+    }
 
     card.played = true;
 }, input);

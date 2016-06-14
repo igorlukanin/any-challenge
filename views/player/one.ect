@@ -54,6 +54,7 @@
     var l10n = {
         placeholders: {
             name: 'Имя и фамилия',
+            phone: '8 900 000-00-00',
             cards: 'Играй и зарабатывай очки!'
         },
         labels: {
@@ -68,6 +69,14 @@
             win: 'Я победил',
             loose: 'Я проиграл'
         }
+    };
+
+    var formatPhone = function(phone) {
+        return phone.substr(0, 1) + ' ' +
+                phone.substr(1, 3) + ' ' +
+                phone.substr(4, 3) + '-' +
+                phone.substr(7, 2) + '-' +
+                phone.substr(9, 2);
     };
 
     var drawCard = function(data) {
@@ -101,6 +110,12 @@
                     .attr('placeholder', l10n.placeholders.name)
                     .property('value', player.name);
         }
+        else if (data.type_id == 'initial_phone') {
+            rules.append('input')
+                    .classed('player__card__input', true)
+                    .attr('placeholder', l10n.placeholders.phone)
+                    .property('value', player.phone);
+        }
         else if (data.type_id == 'initial_selfie') {
             rules.append('input')
                     .classed('player__card__input', true)
@@ -119,6 +134,13 @@
                     .classed('player__card__competitor__name', true)
                     .attr('href', 'mailto:' + (data.own ? data.competitor.email : data.player.email))
                     .text(data.own ? (data.competitor.name || data.competitor.email) : (data.player.name || data.player.email));
+
+            if (data.own ? data.competitor.phone != undefined : data.player.phone != undefined) {
+                competitor.append('a')
+                        .classed('player__card__competitor__phone', true)
+                        .attr('href', 'tel:' + (data.own ? data.competitor.phone : data.player.phone))
+                        .text(formatPhone(data.own ? data.competitor.phone : data.player.phone));
+            }
         }
 
         var buttons = front.append('div')

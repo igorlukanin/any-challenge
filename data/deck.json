@@ -20,13 +20,13 @@
     "score": 10
   },
   {
-    "type": "initial_disabled",
+    "type": "initial",
     "type_id": "initial_phone",
     "priority": 3,
     "emoji": "phone",
     "solo": true,
     "name": "Телефон",
-    "rules": "Укажи телефон, чтобы другие игроки могли тебе позвонить",
+    "rules": "Укажи телефон, чтобы другие игроки могли позвонить. 11 цифр, без изысков",
     "score": 10
   },
   {
