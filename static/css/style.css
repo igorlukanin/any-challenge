@@ -8,6 +8,11 @@ body {
     margin: 0;
 }
 
+a, a:visited {
+    color: #04d;
+    text-decoration: none;
+}
+
 .challenge {
     margin: 5vw;
 }
@@ -211,7 +216,8 @@ body {
 
 .player__card__rules {
     flex-grow: 1;
-    font-style: italic;
+    font-size: 3.5vw;
+    line-height: 5.5vw;
     margin: 0 7.5vw;
 }
 
@@ -220,14 +226,14 @@ body {
     box-sizing: border-box;
     display: block;
     font: normal 4vw 'PT Sans', sans-serif;
-    margin: 2.5vw auto;
+    margin: 5vw auto;
     padding: 0.5em;
     width: 100%;
 }
 
 .player__card__competitor {
     border-top: solid 1px #ddd;
-    padding: 2.5vw 7.5vw 5vw;
+    padding: 2.5vw 7.5vw 2.5vw;
 }
 
 .player__card__competitor__note,
@@ -247,7 +253,6 @@ body {
 
 .player__card__competitor__name {
     color: inherit;
-    text-decoration: none;
 }
 
 .player__card__competitor__phone {
@@ -261,6 +266,7 @@ body {
 
 .player__card__buttons__button {
     border-right: solid 1px #ddd;
+    color: #333;
     cursor: pointer;
     flex: 1;
     font-size: 3vw;

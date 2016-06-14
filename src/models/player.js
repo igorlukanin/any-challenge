@@ -35,7 +35,7 @@ const loadPlayer = id => db.c.then(c => db.players
 
 const setPlayerName = (playerId, name) => db.c.then(c => db.players
         .get(playerId)
-        .update({ name: name })
+        .update({ name })
         .run(c));
 
 const setPlayerPhone = (playerId, phone) => db.c.then(c => db.players
