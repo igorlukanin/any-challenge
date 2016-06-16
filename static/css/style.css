@@ -185,6 +185,18 @@ a, a:visited {
     transform: rotateY(0deg);
 }
 
+.player__card__back_1 {
+    background: linear-gradient(-45deg, rgb(173, 206, 41), rgb(124, 147, 31));
+}
+
+.player__card__back_2 {
+    background: linear-gradient(-45deg, rgb(254, 197, 71), rgb(253, 129, 38));
+}
+
+.player__card__back_3 {
+    background: linear-gradient(-45deg, rgb(253, 142, 107), rgb(252, 78, 46));
+}
+
 .player__card__front,
 .player__card__back {
     backface-visibility: hidden;

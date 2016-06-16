@@ -86,6 +86,9 @@
 
         var back = card.append('div')
                 .classed('player__card__back', true)
+                .classed('player__card__back_1', data.scores.win == 1)
+                .classed('player__card__back_2', data.scores.win == 2)
+                .classed('player__card__back_3', data.scores.win == 3)
                 .on('click', data.own ? flipCard : flipCardAsCompetitor);
 
         back.append('div')
