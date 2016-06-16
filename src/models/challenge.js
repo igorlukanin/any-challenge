@@ -22,8 +22,21 @@ const loadChallenge = id => db.c.then(c => db.challenges
         return challenge;
     }));
 
+const loadChallengeByPlayer = playerId => db.c.then(c => db.challenges
+    .filter(db.r.row('players').contains(playerId))
+    .nth(0) // The only challenge for this player
+    .run(c)
+    .then(challenge => {
+        if (challenge == null) {
+            return Promise.reject({ message: 'Challenge not found', id: id });
+        }
+
+        return challenge;
+    }));
+
 
 module.exports = {
     create: createChallenge,
-    load: loadChallenge
+    load: loadChallenge,
+    loadByPlayer: loadChallengeByPlayer
 };

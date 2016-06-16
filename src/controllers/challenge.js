@@ -1,3 +1,4 @@
+const config = require('config');
 const Promise = require('promise');
 const router = require('express').Router();
 const challenges = require('../models/challenge');
@@ -31,17 +32,31 @@ router.post('/', (req, res) => {
         .catch(err => res.render('errors/index', { err }));
 });
 
+// router.get('/:id/players', (req, res) => {
+//     const id = req.params.id;
+//
+//     const thisChallenge = challenges.load(id);
+//
+//     const thisPlayers = thisChallenge
+//         .then(challenge => players.loadAll(challenge.players));
+//
+//     Promise
+//         .all([ thisChallenge, thisPlayers ])
+//         .then(([ challenge, players ]) => res.render('challenge/one', { challenge, players }))
+//         .catch(err => res.render('errors/index', { err }));
+// });
+
 router.get('/:id', (req, res) => {
     const id = req.params.id;
 
-    const thisChallenge = challenges.load(id);
-
-    const thisPlayers = thisChallenge
-        .then(challenge => players.loadAll(challenge.players));
-
-    Promise
-        .all([ thisChallenge, thisPlayers ])
-        .then(([ challenge, players ]) => res.render('challenge/one', { challenge, players }))
+    challenges.load(id)
+        .then(challenge => res.render('challenge/dashboard', {
+            challenge,
+            ws: {
+                host: config.get('ws.host'),
+                port: config.get('ws.port')
+            }
+        }))
         .catch(err => res.render('errors/index', { err }));
 });
 

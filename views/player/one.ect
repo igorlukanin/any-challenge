@@ -6,10 +6,11 @@
 
 <script>
     var ws = <%- JSON.stringify(@ws, null, 2) %>;
+    var challenge = <%- JSON.stringify(@challenge, null, 2) %>;
     var player = <%- JSON.stringify(@player, null, 2) %>;
     var cards = [];
 
-    var socket = io('http://' + ws.host + ':' + ws.port, { query: 'player=' + player.id });
+    var socket = io('http://' + ws.host + ':' + ws.port + '/player', { query: 'player=' + player.id });
 
     socket.on('cards', function(updatedCards) {
         cards = updatedCards;
@@ -67,8 +68,8 @@
             competitor: 'Соперник',
             competitorWonOrNot: 'Соперник пока не согласился',
             competitorLostOrNot: 'Соперник пока не согласился',
-            competitorWon: 'Соперник считает, что ты победил',
-            competitorLost: 'Соперник считает, что ты проиграл'
+            competitorWon: 'Соперник признал поражение',
+            competitorLost: 'Соперник считает, что победил'
         },
         buttons: {
             play: 'Сохранить',
@@ -287,6 +288,14 @@
         playedCards.append('div')
                 .classed('player__profile__played-cards__placeholder', true)
                 .text(l10n.placeholders.cards);
+
+        var dashboard = profile.append('div')
+                .classed('player__profile__dashboard', true);
+
+        dashboard.append('a')
+                .attr('href', '/challenges/' + challenge.id)
+                .attr('target', '_blank')
+                .text('Торопись! Соперники наступают на пятки!');
     };
 
     var redrawPlayer = function() {

@@ -29,31 +29,34 @@ const dealOneRegularCard = (dealtCards, dealtForHimAndCompetitor) => {
 const loadCardsByPlayer = playerId => db.c.then(c => db.cards
     .filter({ player: playerId })
     .run(c)
-    .then(cursor => cursor.toArray()));
+    .then(cursor => cursor.toArray()))
+    .then(cards => cards.map(card => {
+        card.own = true;
+        return card;
+    }));
 
 const loadCardsByCompetitor = playerId => db.c.then(c => db.cards
     .filter({ competitor: playerId })
     .run(c)
-    .then(cursor => cursor.toArray()));
+    .then(cursor => cursor.toArray()))
+    .then(cards => cards.map(card => {
+        card.own = false;
+        return card;
+    }));
 
 const loadAllCards = playerId => {
     const hisCards = loadCardsByPlayer(playerId)
-        .then(cards => Promise.all(cards.map(card => {
-            card.own = true;
-
-            return card.solo ? card : players
-                .load(card.competitor)
-                .then(competitor => {
-                    card.competitor = competitor;
-                    return card;
-                });
-        })));
+        .then(cards => Promise.all(cards.map(card => card.solo ? card : players
+            .load(card.competitor)
+            .then(competitor => {
+                card.competitor = competitor;
+                return card;
+            }))));
 
     const hisCardsAsCompetitor = loadCardsByCompetitor(playerId)
         .then(cards => Promise.all(cards.map(card => players
             .load(card.player)
             .then(player => {
-                card.own = false;
                 card.player = player;
                 return card;
         }))));

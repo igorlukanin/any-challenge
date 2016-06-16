@@ -2,12 +2,62 @@ const config = require('config');
 const io = require('socket.io');
 
 const cards = require('./models/card');
+const challenges = require('./models/challenge');
 const players = require('./models/player');
 const log = require('./util/log');
 
 
 process.on('uncaughtException', (err) => console.error(err.stack));
 require('promise/lib/rejection-tracking').enable({ allRejections: true });
+
+
+// TODO: Remove code duplicates
+// TODO: +duplicate
+var calculateScoreForCard = function(card) {
+    return (card.played && card.solo ? card.scores.play : 0) +
+        (card.played && card.own && card.won ? card.scores.win : 0) +
+        (card.played && card.own && !card.won ? card.scores.loose : 0) +
+        (card.played && !card.own && card.competitor_won ? card.scores.win : 0) +
+        (card.played && !card.own && !card.competitor_won ? card.scores.loose : 0);
+};
+
+var calculateScoreForCards = function(cards) {
+    return cards.reduce(function(score, card) {
+        return score + calculateScoreForCard(card);
+    }, 0);
+};
+// TODO: -duplicate
+
+
+var dashboards = [];
+
+const addDashboard = client => dashboards.push(client);
+
+const removeDashboard = removedClient => {
+    dashboards = dashboards.filter(client =>
+        client.handshake.query.t != removedClient.handshake.query.t);
+};
+
+const notifyDashboards = (challengeId, namespace, data) => dashboards
+    .filter(client => client.handshake.query.challenge == challengeId)
+    .forEach(client => client.emit(namespace, data));
+
+const pushPlayersToDashboard = challengeId => {
+    challenges.load(challengeId)
+        .then(challenge => players.loadAll(challenge.players))
+        .then(players => Promise.all(players.map(player => cards.loadAll(player.id).then(hisCards => {
+                player.score = calculateScoreForCards(hisCards);
+                return player;
+            }))))
+        .then(players => {
+            players.sort((one, two) => two.score - one.score);
+            return players;
+        })
+        .then(players => notifyDashboards(challengeId, 'players', players));
+};
+
+const pushPlayersToAllDashboards = () => dashboards.forEach(client =>
+    pushPlayersToDashboard(client.handshake.query.challenge));
 
 
 var clients = [];
@@ -32,8 +82,21 @@ const pushProfileUpdateToPlayer = playerId => players.load(playerId)
 
 log.appState('dealer', 'ready to deal cards');
 
-io()
-    .listen(config.get('ws.port'))
+
+var server = io()
+    .listen(config.get('ws.port'));
+
+server.of('/challenge')
+    .on('connection', socket => {
+        const challengeId = socket.handshake.query.challenge;
+
+        addDashboard(socket);
+        pushPlayersToDashboard(challengeId);
+
+        socket.on('disconnect', () => removeDashboard(socket));
+    });
+
+server.of('/player')
     .on('connection', socket => {
         const playerId = socket.handshake.query.player;
 
@@ -42,6 +105,7 @@ io()
 
         socket.on('disconnect', () => removeClient(socket));
     });
+
 
 players
     .feedAll()
@@ -79,6 +143,7 @@ cards
         }
 
         pushCardsToPlayer(card.player);
+        pushPlayersToAllDashboards();
 
         if (card.type == 'initial') {
             pushProfileUpdateToPlayer(card.player);
