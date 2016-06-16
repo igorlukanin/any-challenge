@@ -36,6 +36,7 @@ router.post('/enter', (req, res) => {
     const emails = parseEmails(req.body.email);
 
     if (emails == null || emails.length != 1) {
+        console.log('Email is null or wrong email count: ' + emails);
         res.status(400).send();
     }
     else {
@@ -43,6 +44,7 @@ router.post('/enter', (req, res) => {
             .loadByEmail(emails[0].replace('@kontur.ru', '@skbkontur.ru'))
             .then(players => {
                 if (players.length != 1) {
+                    console.log('Wrong player count: ' + players);
                     res.status(400).send();
                 }
                 else {
