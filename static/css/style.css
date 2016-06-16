@@ -38,18 +38,13 @@ a, a:visited {
 .player__cards {
     display: flex;
     flex-direction: column;
-    padding: 5vw 10vw;
+    padding: 10vw 10vw 5vw;
 }
 
 .player__profile {
     background: #f6f6f6;
     padding-top: 2.5vw;
     text-align: center;
-}
-
-.player__profile__name {
-    color: inherit;
-    text-decoration: none;
 }
 
 .player__profile__numbers {
@@ -250,7 +245,7 @@ a, a:visited {
 
 .player__card__competitor__note,
 .player__card__competitor__name,
-.player__card__competitor__contacts {
+.player__card__competitor__phone {
     display: block;
 }
 
@@ -266,12 +261,7 @@ a, a:visited {
     color: inherit !important;
 }
 
-.player__card__competitor__contacts {
-    display: flex;
-}
-
-.player__card__competitor__phone,
-.player__card__competitor__telegram {
+.player__card__competitor__phone {
     font-size: 3vw;
     padding-right: 3vw;
 }

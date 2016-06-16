@@ -43,11 +43,6 @@ const setPlayerPhone = (playerId, phone) => db.c.then(c => db.players
         .update({ phone })
         .run(c));
 
-const setPlayerTelegram = (playerId, telegram) => db.c.then(c => db.players
-        .get(playerId)
-        .update({ telegram })
-        .run(c));
-
 // Choose all previously unchosen competitors for this player
 const loadCompetitor = (playerId, previousCompetitorIds) => db.c.then(c => db.challenges
     .filter(db.r.row('players').contains(playerId))
@@ -72,6 +67,5 @@ module.exports = {
     load: loadPlayer,
     setName: setPlayerName,
     setPhone: setPlayerPhone,
-    setTelegram: setPlayerTelegram,
     chooseCompetitor: loadCompetitor
 };

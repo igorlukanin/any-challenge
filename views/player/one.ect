@@ -61,7 +61,6 @@
         placeholders: {
             name: 'Имя и фамилия',
             phone: '8 900 000-00-00',
-            telegram: 'https://telegram.me/konturovets',
             cards: 'Играй и зарабатывай очки!'
         },
         labels: {
@@ -118,18 +117,6 @@
                     .attr('placeholder', l10n.placeholders.phone)
                     .property('value', player.phone);
         }
-        else if (data.type_id == 'initial_telegram') {
-            rules.append('input')
-                    .classed('player__card__input', true)
-                    .attr('placeholder', l10n.placeholders.telegram)
-                    .property('value', player.telegram);
-        }
-        else if (data.type_id == 'initial_selfie') {
-            rules.append('input')
-                    .classed('player__card__input', true)
-                    .attr('type', 'file')
-                    .property('accept', 'image/*;capture=camera');
-        }
 
         if (!data.solo) {
             var competitor = front.append('div')
@@ -142,15 +129,8 @@
                     .classed('player__card__competitor__name', true)
                     .attr('target', '_blank');
 
-            var contacts = competitor.append('a')
-                    .classed('player__card__competitor__contacts', true);
-
-            contacts.append('a')
+            competitor.append('a')
                     .classed('player__card__competitor__phone', true)
-                    .attr('target', '_blank');
-
-            contacts.append('a')
-                    .classed('player__card__competitor__telegram', true)
                     .attr('target', '_blank');
         }
 
@@ -205,10 +185,6 @@
                 phone.substr(9, 2);
     };
 
-    var formatTelegram = function(telegram) {
-        return telegram.substr(20); // Remove the leading 'https://telegram.me/' part
-    };
-
     var formatStaff = function(email) {
         return 'https://staff.skbkontur.ru/profile/' + email.substr(0, email.indexOf('@'));
     };
@@ -246,12 +222,6 @@
                 card.select('.player__card__competitor__phone')
                         .attr('href', 'tel:' + (data.own ? data.competitor.phone : data.player.phone))
                         .text(formatPhone(data.own ? data.competitor.phone : data.player.phone));
-            }
-
-            if (data.own ? data.competitor.telegram != undefined : data.player.telegram != undefined) {
-                card.select('.player__card__competitor__telegram')
-                        .attr('href', data.own ? data.competitor.telegram : data.player.telegram)
-                        .text(formatTelegram(data.own ? data.competitor.telegram : data.player.telegram));
             }
 
             card.select('.player__card__buttons__button_win')

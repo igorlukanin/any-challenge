@@ -19,16 +19,6 @@
     "rules": "Укажи телефон, чтобы другие игроки могли позвонить. 11 цифр, без изысков",
     "score": 1
   },
-  {
-    "type": "initial",
-    "type_id": "initial_telegram",
-    "priority": 4,
-    "emoji": "speech-balloon",
-    "solo": true,
-    "name": "Телеграм",
-    "rules": "Укажи ссылку на профиль в Телеграме, чтобы другие игроки могли тебе написать",
-    "score": 1
-  },
   {"type": "regular", "type_id": "regular_airplane", "emoji": "airplane", "solo": false, "name": "Мне бы в небо", "rules": "Каждый сам делает самолетик из бумаги. Одновременно запускаете. Чей дальше улетит, тот и победил", "score": 1},
   {"type": "regular", "type_id": "regular_arrow_heading_down", "emoji": "arrow_heading_down", "solo": false, "name": "Стойка на голове", "rules": "Встаньте на голову (можно использовать любую стенку). Кто простоит дольше, тот и победил ", "score": 2},
   {"type": "regular", "type_id": "regular_arrows_counterclockwise", "emoji": "arrows_counterclockwise", "solo": false, "name": "Колесо", "rules": "Сделайте колесо. Кто сделает больше раз подряд, тот и победил", "score": 2},
