@@ -33,6 +33,11 @@ const loadPlayer = id => db.c.then(c => db.players
         return player;
     }));
 
+const loadPlayersByEmail = email => db.c.then(c => db.players
+    .filter({ email })
+    .run(c)
+    .then(cursor => cursor.toArray()));
+
 const setPlayerName = (playerId, name) => db.c.then(c => db.players
         .get(playerId)
         .update({ name })
@@ -65,6 +70,7 @@ module.exports = {
     loadAll: loadPlayers,
     feedAll: feedPlayers,
     load: loadPlayer,
+    loadByEmail: loadPlayersByEmail,
     setName: setPlayerName,
     setPhone: setPlayerPhone,
     chooseCompetitor: loadCompetitor

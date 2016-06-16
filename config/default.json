@@ -1,5 +1,6 @@
 {
   "server": {
+    "host": "localhost",
     "port": 3015
   },
   "ws": {
@@ -18,5 +19,13 @@
     "cards": {
       "emoji": "secret"
     }
+  },
+  "smtp": {
+    "host": "smtp.skbkontur.ru",
+    "port": 587,
+    "user": "lukanin",
+    "pass": "",
+    "from": "lukanin@kontur.ru",
+    "subject": "Чемпионат по всему"
   }
 }

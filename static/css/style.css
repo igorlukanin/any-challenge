@@ -340,3 +340,36 @@ a, a:visited {
     font-size: 3vw;
     padding: 1.5vw 2vw;
 }
+
+.form__email {
+    background: #fff;
+    border-top: solid 1px #eee;
+    padding: 4vw;
+}
+
+.player__card__buttons_form {
+    background: #fff;
+}
+
+.emoji_form_wrapper {
+    background: #fff;
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 4vw;
+    margin-top: -4vw;
+    height: 10vw;
+}
+
+.emoji_form {
+    background: #fff;
+    display: inline-block;
+    flex-grow: 1;
+    width: 6vw;
+    height: 6vw;
+}
+
+.player__card__input[disabled=true],
+.player__card__buttons_form_disabled {
+    background: #eee;
+}

@@ -3,6 +3,7 @@ const Promise = require('promise');
 const router = require('express').Router();
 const challenges = require('../models/challenge');
 const players = require('../models/player');
+const mailer = require('../util/mailer');
 
 
 const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
@@ -18,8 +19,7 @@ const parseParams = (title, emailString) => new Promise((resolve, reject) => {
     else { resolve({ title, emails }); }
 });
 
-
-router.get('/', (req, res) => res.render('challenge/add'));
+router.get('/add', (req, res) => res.render('challenge/add'));
 
 router.post('/', (req, res) => {
     const title = req.body.title;
@@ -30,6 +30,27 @@ router.post('/', (req, res) => {
         .then(([ title, playerIds ]) => challenges.create(title, playerIds))
         .then(challengeId => res.redirect('/challenges/' + challengeId))
         .catch(err => res.render('errors/index', { err }));
+});
+
+router.post('/enter', (req, res) => {
+    const emails = parseEmails(req.body.email);
+
+    if (emails == null || emails.length != 1) {
+        res.status(400).send();
+    }
+    else {
+        players
+            .loadByEmail(emails[0].replace('@kontur.ru', '@skbkontur.ru'))
+            .then(players => {
+                if (players.length != 1) {
+                    res.status(400).send();
+                }
+                else {
+                    mailer.sendLinks(players);
+                    res.status(200).send();
+                }
+            });
+    }
 });
 
 // router.get('/:id/players', (req, res) => {

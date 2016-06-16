@@ -1,5 +1,12 @@
 {
+  "server": {
+    "host": "konfur.igor.lukanin.name",
+    "port": 80
+  },
   "ws": {
     "host": "konfur.igor.lukanin.name"
+  },
+  "smtp": {
+    "pass": ""
   }
 }
