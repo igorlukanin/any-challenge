@@ -31,7 +31,7 @@
 
         profile.append('span')
                 .classed('player__profile__played-cards__card__text', true)
-                .text(data.name);
+                .text(data.name != undefined ? data.name : data.email);
 
         profile.append('span')
                 .classed('player__profile__played-cards__card__score', true)
