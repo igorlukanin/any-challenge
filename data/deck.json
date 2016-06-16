@@ -77,5 +77,13 @@
   {"type": "regular", "type_id": "regular_thought_balloon", "emoji": "thought_balloon", "solo": false, "name": "Устный счёт", "rules": "Зрители выбирают два случайных двузначных числа. Кто первый их правильно перемножит в уме, тот и победил", "score": 1},
   {"type": "regular", "type_id": "regular_tongue", "emoji": "tongue", "solo": false, "name": "В упор", "rules": "Встаньте напротив противника, смотрите на него в упор. Кто засмеялся, тот проиграл", "score": 1},
   {"type": "regular", "type_id": "regular_video_game", "emoji": "video_game", "solo": false, "name": "Финиш хим", "rules": "Сразитесь в любую компьютерную игру. Кто первым одержит две победы, тот и победил", "score": 2},
-  {"type": "regular", "type_id": "regular_zzz", "emoji": "zzz", "solo": false, "name": "Не спи", "rules": "Ложитесь спать. Кто первый захрапел, тот проиграл", "score": 2}
+  {"type": "regular", "type_id": "regular_zzz", "emoji": "zzz", "solo": false, "name": "Не спи", "rules": "Ложитесь спать. Кто первый захрапел, тот проиграл", "score": 2},
+  {"type": "regular", "type_id": "regular_bird", "emoji": "bird", "solo": false, "name": "Летела ворона", "rules": "В голубых панталонах, читала газету под номером 7. До двух побед. Если не знаете правила — гуглите :)", "score": 1},
+  {"type": "regular", "type_id": "regular_bowling", "emoji": "bowling", "solo": false, "name": "Крестики-нолики", "rules": "Играйте в бесконечные крестики-нолики до одной победы", "score": 1},
+  {"type": "regular", "type_id": "regular_dango", "emoji": "dango", "solo": false, "name": "Бильярд", "rules": "Одна партия по любым правилам", "score": 2},
+  {"type": "regular", "type_id": "regular_bowling2", "emoji": "bowling", "solo": false, "name": "Боулинг", "rules": "Побеждает тот, у кого будет больше очков по итогам трёх бросков", "score": 2},
+  {"type": "regular", "type_id": "regular_abc", "emoji": "abc", "solo": false, "name": "Балда", "rules": "Если не знаете правила — гуглите :)", "score": 1},
+  {"type": "regular", "type_id": "regular_thumbsup", "emoji": "thumbsup", "solo": false, "name": "Борьба на пальцах", "rules": "Сцепите кулаки, выставив вверх большие пальцы. Побеждает тот, кто трижды обездвижит палец соперника", "score": 1},
+  {"type": "regular", "type_id": "regular_spades", "emoji": "spades", "solo": false, "name": "Дурак", "rules": "Найдите карты, играйте в дурака до двух побед", "score": 2},
+  {"type": "regular", "type_id": "regular_balloon", "emoji": "balloon", "solo": false, "name": "Надуй шарик", "rules": "Возьмите по шарику у «Образовательных программ». Кто первый лопнет свой шарик через надувание, тот и победил :)", "score": 2}
 ]
