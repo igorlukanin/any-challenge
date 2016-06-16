@@ -251,7 +251,7 @@ a, a:visited {
 }
 
 .player__card__competitor__name {
-    color: inherit;
+    color: inherit !important;
 }
 
 .player__card__competitor__contacts {

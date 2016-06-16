@@ -136,7 +136,8 @@
                     .classed('player__card__competitor__note', true);
 
             competitor.append('a')
-                    .classed('player__card__competitor__name', true);
+                    .classed('player__card__competitor__name', true)
+                    .attr('target', '_blank');
 
             var contacts = competitor.append('a')
                     .classed('player__card__competitor__contacts', true);
@@ -205,6 +206,10 @@
         return telegram.substr(20); // Remove the leading 'https://telegram.me/' part
     };
 
+    var formatStaff = function(email) {
+        return 'https://staff.skbkontur.ru/profile/' + email.substr(0, email.indexOf('@'));
+    };
+
     var redrawCard = function(data) {
         var card = d3.select(this)
                 .select('.player__card')
@@ -231,7 +236,7 @@
                     .text(competitorText);
 
             card.select('.player__card__competitor__name')
-                    .attr('href', 'mailto:' + (data.own ? data.competitor.email : data.player.email))
+                    .attr('href', formatStaff(data.own ? data.competitor.email : data.player.email))
                     .text(data.own ? (data.competitor.name || data.competitor.email) : (data.player.name || data.player.email));
 
             if (data.own ? data.competitor.phone != undefined : data.player.phone != undefined) {
@@ -291,9 +296,8 @@
     var drawPlayer = function() {
         var profile = d3.select(this);
 
-        profile.append('a')
-                .classed('player__profile__name', true)
-                .attr('href', 'mailto:' + player.email);
+        profile.append('span')
+                .classed('player__profile__name', true);
 
         var numbers = profile.append('div')
                 .classed('player__profile__numbers', true);
