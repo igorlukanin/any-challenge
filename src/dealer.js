@@ -47,6 +47,7 @@ const pushPlayersToDashboard = challengeId => {
         .then(challenge => players.loadAll(challenge.players))
         .then(players => Promise.all(players.map(player => cards.loadAll(player.id).then(hisCards => {
                 player.score = calculateScoreForCards(hisCards);
+                delete player.id;
                 return player;
             }))))
         .then(players => {
