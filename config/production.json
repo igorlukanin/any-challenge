@@ -1,5 +1,5 @@
 {
-  "server": {
+  "proxy": {
     "host": "konfur.igor.lukanin.name",
     "port": 80
   },

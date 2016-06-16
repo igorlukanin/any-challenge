@@ -16,7 +16,7 @@ const transporter = mailer.createTransport({
 
 const sendLinks = players => {
     players.forEach(player => {
-        const link = 'http://' + config.get('server.host') + ':' + config.get('server.port') + '/players/' + player.id;
+        const link = 'http://' + config.get('proxy.host') + ':' + config.get('proxy.port') + '/players/' + player.id;
 
         const options = {
             from: config.get('smtp.from'),

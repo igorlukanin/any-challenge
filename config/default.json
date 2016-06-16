@@ -1,4 +1,8 @@
 {
+  "proxy": {
+    "host": "localhost",
+    "port": 3015
+  },
   "server": {
     "host": "localhost",
     "port": 3015
