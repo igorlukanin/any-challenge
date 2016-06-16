@@ -1,51 +1,61 @@
-.emoji_secret {
-    background: url("https://twemoji.maxcdn.com/svg/3299.svg") no-repeat center center;
-}
+.emoji_secret { background: url("https://twemoji.maxcdn.com/svg/3299.svg") no-repeat center center; }
 
-.emoji_raised-hand {
-    background: url("https://twemoji.maxcdn.com/svg/1f64b.svg") no-repeat center center;
-}
+.emoji_raised-hand { background: url("https://twemoji.maxcdn.com/svg/1f64b.svg") no-repeat center center; }
+.emoji_phone { background: url("https://twemoji.maxcdn.com/svg/260e.svg") no-repeat center center; }
+.emoji_speech-balloon { background: url("https://twemoji.maxcdn.com/svg/1f4ac.svg") no-repeat center center; }
 
-.emoji_camera {
-    background: url("https://twemoji.maxcdn.com/svg/1f4f7.svg") no-repeat center center;
-}
-
-.emoji_phone {
-    background: url("https://twemoji.maxcdn.com/svg/260e.svg") no-repeat center center;
-}
-
-.emoji_speech-balloon {
-    background: url("https://twemoji.maxcdn.com/svg/1f4ac.svg") no-repeat center center;
-}
-
-.emoji_x {
-    background: url("https://twemoji.maxcdn.com/svg/274c.svg") no-repeat center center;
-}
-
-.emoji_paw-prints {
-    background: url("https://twemoji.maxcdn.com/svg/1f43e.svg") no-repeat center center;
-}
-
-.emoji_runner {
-    background: url("https://twemoji.maxcdn.com/svg/1f3c3.svg") no-repeat center center;
-}
-
-.emoji_wine-glass {
-    background: url("https://twemoji.maxcdn.com/svg/1f377.svg") no-repeat center center;
-}
-
-.emoji_city-sunrise {
-    background: url("https://twemoji.maxcdn.com/svg/1f307.svg") no-repeat center center;
-}
-
-.emoji_8ball {
-    background: url("https://twemoji.maxcdn.com/svg/1f3b1.svg") no-repeat center center;
-}
-
-.emoji_muscle {
-    background: url("https://twemoji.maxcdn.com/svg/1f4aa.svg") no-repeat center center;
-}
-
-.emoji_hamburger {
-    background: url("https://twemoji.maxcdn.com/svg/1f354.svg") no-repeat center center;
-}
+.emoji_airplane { background: url("https://twemoji.maxcdn.com/svg/2708.svg") no-repeat center center; }
+.emoji_arrow_heading_down { background: url("https://twemoji.maxcdn.com/svg/2935.svg") no-repeat center center; }
+.emoji_arrows_counterclockwise { background: url("https://twemoji.maxcdn.com/svg/1f504.svg") no-repeat center center; }
+.emoji_art { background: url("https://twemoji.maxcdn.com/svg/1f3a8.svg") no-repeat center center; }
+.emoji_basketball { background: url("https://twemoji.maxcdn.com/svg/1f3c0.svg") no-repeat center center; }
+.emoji_beer { background: url("https://twemoji.maxcdn.com/svg/1f37a.svg") no-repeat center center; }
+.emoji_beers { background: url("https://twemoji.maxcdn.com/svg/1f37b.svg") no-repeat center center; }
+.emoji_beetle { background: url("https://twemoji.maxcdn.com/svg/1f41e.svg") no-repeat center center; }
+.emoji_boat { background: url("https://twemoji.maxcdn.com/svg/26f5.svg") no-repeat center center; }
+.emoji_bomb { background: url("https://twemoji.maxcdn.com/svg/1f4a3.svg") no-repeat center center; }
+.emoji_boom { background: url("https://twemoji.maxcdn.com/svg/1f4a5.svg") no-repeat center center; }
+.emoji_cactus { background: url("https://twemoji.maxcdn.com/svg/1f335.svg") no-repeat center center; }
+.emoji_camel { background: url("https://twemoji.maxcdn.com/svg/1f42b.svg") no-repeat center center; }
+.emoji_camera { background: url("https://twemoji.maxcdn.com/svg/1f4f7.svg") no-repeat center center; }
+.emoji_city_sunset { background: url("https://twemoji.maxcdn.com/svg/1f306.svg") no-repeat center center; }
+.emoji_computer { background: url("https://twemoji.maxcdn.com/svg/1f4bb.svg") no-repeat center center; }
+.emoji_crocodile { background: url("https://twemoji.maxcdn.com/svg/1f40a.svg") no-repeat center center; }
+.emoji_cyclone { background: url("https://twemoji.maxcdn.com/svg/1f300.svg") no-repeat center center; }
+.emoji_dart { background: url("https://twemoji.maxcdn.com/svg/1f3af.svg") no-repeat center center; }
+.emoji_european_castle { background: url("https://twemoji.maxcdn.com/svg/1f3f0.svg") no-repeat center center; }
+.emoji_eyes { background: url("https://twemoji.maxcdn.com/svg/1f440.svg") no-repeat center center; }
+.emoji_feelsgood { background: url("https://twemoji.maxcdn.com/svg/1f3a2.svg") no-repeat center center; }
+.emoji_feet { background: url("https://twemoji.maxcdn.com/svg/1f463.svg") no-repeat center center; }
+.emoji_fist { background: url("https://twemoji.maxcdn.com/svg/270a.svg") no-repeat center center; }
+.emoji_fork_and_knife { background: url("https://twemoji.maxcdn.com/svg/1f374.svg") no-repeat center center; }
+.emoji_frog { background: url("https://twemoji.maxcdn.com/svg/1f438.svg") no-repeat center center; }
+.emoji_guitar { background: url("https://twemoji.maxcdn.com/svg/1f3b8.svg") no-repeat center center; }
+.emoji_hamburger { background: url("https://twemoji.maxcdn.com/svg/1f354.svg") no-repeat center center; }
+.emoji_high_heel { background: url("https://twemoji.maxcdn.com/svg/1f460.svg") no-repeat center center; }
+.emoji_kiss { background: url("https://twemoji.maxcdn.com/svg/1f48b.svg") no-repeat center center; }
+.emoji_mahjong { background: url("https://twemoji.maxcdn.com/svg/1f004.svg") no-repeat center center; }
+.emoji_mega { background: url("https://twemoji.maxcdn.com/svg/1f4e3.svg") no-repeat center center; }
+.emoji_muscle { background: url("https://twemoji.maxcdn.com/svg/1f4aa.svg") no-repeat center center; }
+.emoji_open_hands { background: url("https://twemoji.maxcdn.com/svg/1f450.svg") no-repeat center center; }
+.emoji_page_facing_up { background: url("https://twemoji.maxcdn.com/svg/1f4c4.svg") no-repeat center center; }
+.emoji_palm_tree { background: url("https://twemoji.maxcdn.com/svg/1f334.svg") no-repeat center center; }
+.emoji_pizza { background: url("https://twemoji.maxcdn.com/svg/1f355.svg") no-repeat center center; }
+.emoji_point_down { background: url("https://twemoji.maxcdn.com/svg/1f447.svg") no-repeat center center; }
+.emoji_point_up { background: url("https://twemoji.maxcdn.com/svg/261d.svg") no-repeat center center; }
+.emoji_punch { background: url("https://twemoji.maxcdn.com/svg/1f44a.svg") no-repeat center center; }
+.emoji_runner { background: url("https://twemoji.maxcdn.com/svg/1f3c3.svg") no-repeat center center; }
+.emoji_scissors { background: url("https://twemoji.maxcdn.com/svg/2702.svg") no-repeat center center; }
+.emoji_scream { background: url("https://twemoji.maxcdn.com/svg/1f631.svg") no-repeat center center; }
+.emoji_see_no_evil { background: url("https://twemoji.maxcdn.com/svg/1f648.svg") no-repeat center center; }
+.emoji_sheep { background: url("https://twemoji.maxcdn.com/svg/1f411.svg") no-repeat center center; }
+.emoji_shoe { background: url("https://twemoji.maxcdn.com/svg/1f45e.svg") no-repeat center center; }
+.emoji_soccer { background: url("https://twemoji.maxcdn.com/svg/26bd.svg") no-repeat center center; }
+.emoji_speak_no_evil { background: url("https://twemoji.maxcdn.com/svg/1f64a.svg") no-repeat center center; }
+.emoji_speech_balloon { background: url("https://twemoji.maxcdn.com/svg/1f4ac.svg") no-repeat center center; }
+.emoji_swimmer { background: url("https://twemoji.maxcdn.com/svg/1f3ca.svg") no-repeat center center; }
+.emoji_tennis { background: url("https://twemoji.maxcdn.com/svg/1f3be.svg") no-repeat center center; }
+.emoji_thought_balloon { background: url("https://twemoji.maxcdn.com/svg/1f4ad.svg") no-repeat center center; }
+.emoji_tongue { background: url("https://twemoji.maxcdn.com/svg/1f445.svg") no-repeat center center; }
+.emoji_video_game { background: url("https://twemoji.maxcdn.com/svg/1f3ae.svg") no-repeat center center; }
+.emoji_zzz { background: url("https://twemoji.maxcdn.com/svg/1f4a4.svg") no-repeat center center; }
