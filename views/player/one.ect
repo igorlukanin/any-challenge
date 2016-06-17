@@ -219,7 +219,7 @@
 
             card.select('.player__card__competitor__name')
                     .attr('href', formatStaff(data.own ? data.competitor.email : data.player.email))
-                    .text(data.own ? (data.competitor.name || data.competitor.email) : (data.player.name || data.player.email));
+                    .text(data.own ? (data.competitor.name || data.competitor.email.replace('@skbkontur.ru', '')) : (data.player.name || data.player.email.replace('@skbkontur.ru', '')));
 
             if (data.own ? data.competitor.phone != undefined : data.player.phone != undefined) {
                 card.select('.player__card__competitor__phone')
