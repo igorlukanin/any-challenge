@@ -25,23 +25,25 @@
         drawPlayers();
     });
 
-    var updateCard = function(card) {
-        for (var i in cards) {
-            if (cards[i].id == card.id) {
-                cards[i] = card;
-            }
-        }
-
-        drawPlayers();
-        drawCards();
-    };
+//    var updateCard = function(card) {
+//        for (var i in cards) {
+//            if (cards[i].id == card.id) {
+//                cards[i] = card;
+//            }
+//        }
+//
+//        drawPlayers();
+//        drawCards();
+//    };
 
     var fireCardAction = function(data, uri) {
         d3.xhr('/cards/' + data.id + uri)
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .response(function(request) { return JSON.parse(request.responseText); })
-                .post("input=" + (data.input || ''))
-                .on('load', updateCard);
+                .post("input=" + (data.input || ''), function() {
+                    window.location.reload();
+                });
+//                .on('load', updateCard);
     };
 
     var playCard = function(data) { fireCardAction(data, '/play'); };

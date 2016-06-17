@@ -12,6 +12,10 @@ router.get('/:id', (req, res) => {
 
     Promise
         .all([ thisChallenge, thisPlayer ])
+        .then(([ challenge, player ]) => {
+            delete challenge.players;
+            return [ challenge, player ];
+        })
         .then(([ challenge, player ]) => res.render('player/one', {
             challenge,
             player,

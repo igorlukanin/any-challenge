@@ -50,6 +50,7 @@ const pushPlayersToDashboard = challengeId => {
                 delete player.id;
                 return player;
             }))))
+        .then(players => players.filter(player => player.score > 0))
         .then(players => {
             players.sort((one, two) => two.score - one.score);
             return players;
