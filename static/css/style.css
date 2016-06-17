@@ -30,7 +30,7 @@ a, a:visited {
 .player__cards {
     display: flex;
     flex-direction: column;
-    padding: 10vw 10vw 5vw;
+    padding: 0 10vw 5vw;
 }
 
 .player__profile {
