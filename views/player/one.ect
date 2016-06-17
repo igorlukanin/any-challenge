@@ -295,9 +295,9 @@
                 .classed('player__profile__dashboard', true);
 
         dashboard.append('a')
-                .attr('href', '/challenges/' + challenge.id)
+                .attr('href', '/challenges/' + challenge.id + '#' + player.email)
                 .attr('target', '_blank')
-                .text('Торопись! Соперники наступают на пятки!');
+                .text('На каком я месте? Призы будут?');
     };
 
     var redrawPlayer = function() {

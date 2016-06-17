@@ -373,3 +373,7 @@ a, a:visited {
 .player__card__buttons_form_disabled {
     background: #eee;
 }
+
+.player__profile__played-cards__card__text_bold {
+    font-weight: bold;
+}

@@ -22,8 +22,11 @@
                 .classed('emoji_face_2', i > 2 && i <= 5)
                 .classed('emoji_face_3', i > 5);
 
+        var playerEmail = window.location.href.split("#")[1] || undefined;
+
         profile.append('span')
                 .classed('player__profile__played-cards__card__text', true)
+                .classed('player__profile__played-cards__card__text_bold', playerEmail == data.email)
                 .text(data.name != undefined ? data.name : data.email);
 
         profile.append('span')
