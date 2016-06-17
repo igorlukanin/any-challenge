@@ -144,16 +144,16 @@ cards
             return;
         }
 
-        pushCardsToPlayer(card.player);
+        // pushCardsToPlayer(card.player);
         pushPlayersToAllDashboards();
 
-        if (card.type == 'initial') {
-            pushProfileUpdateToPlayer(card.player);
+        // if (card.type == 'initial') {
+            // pushProfileUpdateToPlayer(card.player);
 
-            cards.loadAllByCompetitor(card.player).then(cards => cards.forEach(card => {
-                pushCardsToPlayer(card.player);
-            }));
-        }
+            // cards.loadAllByCompetitor(card.player).then(cards => cards.forEach(card => {
+            //     pushCardsToPlayer(card.player);
+            // }));
+        // }
 
         if (!card.solo) {
             pushCardsToPlayer(card.competitor);
