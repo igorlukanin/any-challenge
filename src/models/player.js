@@ -54,6 +54,7 @@ const loadCompetitor = (playerId, previousCompetitorIds) => db.c.then(c => db.ch
     .nth(0) // The only challenge for this player
     .getField('players')
     .setDifference(previousCompetitorIds.concat(playerId))
+    .sample(1)
     .run(c)
     .then(cursor => cursor.toArray())
     .then(competitors => {
