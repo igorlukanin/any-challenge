@@ -1,6 +1,8 @@
 const config = require('config');
 const Promise = require('promise');
 const router = require('express').Router();
+
+const cards = require('../models/card');
 const challenges = require('../models/challenge');
 const players = require('../models/player');
 const mailer = require('../util/mailer');
@@ -55,32 +57,57 @@ router.post('/enter', (req, res) => {
     }
 });
 
-// router.get('/:id/players', (req, res) => {
-//     const id = req.params.id;
-//
-//     const thisChallenge = challenges.load(id);
-//
-//     const thisPlayers = thisChallenge
-//         .then(challenge => players.loadAll(challenge.players));
-//
-//     Promise
-//         .all([ thisChallenge, thisPlayers ])
-//         .then(([ challenge, players ]) => res.render('challenge/one', { challenge, players }))
-//         .catch(err => res.render('errors/index', { err }));
-// });
+
+// TODO: Remove code duplicates
+// TODO: +duplicate
+var calculateScoreForCard = function(card) {
+    return (card.played && card.solo ? card.scores.play : 0) +
+        (card.played && card.own && card.won ? card.scores.win : 0) +
+        (card.played && card.own && !card.won ? card.scores.loose : 0) +
+        (card.played && !card.own && card.competitor_won ? card.scores.win : 0) +
+        (card.played && !card.own && !card.competitor_won ? card.scores.loose : 0);
+};
+
+var calculateScoreForCards = function(cards) {
+    return cards.reduce(function(score, card) {
+        return score + calculateScoreForCard(card);
+    }, 0);
+};
+// TODO: -duplicate
 
 router.get('/:id', (req, res) => {
     const id = req.params.id;
 
-    challenges.load(id)
-        .then(challenge => res.render('challenge/dashboard', {
-            challenge,
-            ws: {
-                host: config.get('ws.host'),
-                port: config.get('ws.port')
-            }
-        }))
-        .catch(err => res.render('errors/index', { err }));
+    const thisChallenge = challenges.load(id);
+
+    const thesePlayers = thisChallenge
+        .then(challenge => players.loadAll(challenge.players))
+        .then(players => Promise.all(players.map(player => cards.loadAll(player.id).then(hisCards => {
+            player.score = calculateScoreForCards(hisCards);
+            delete player.id;
+            return player;
+        }))))
+        .then(players => players.filter(player => player.score > 0))
+        .then(players => {
+            players.sort((one, two) => two.score - one.score);
+            return players;
+        });
+
+    Promise
+        .all([ thisChallenge, thesePlayers ])
+        .then(([ challenge, players ]) => {
+            delete challenge.players;
+            players = players.map(player => {
+                delete player.id;
+                return player;
+            });
+
+            res.render('challenge/dashboard', {
+                challenge,
+                players
+            });
+        });
+
 });
 
 

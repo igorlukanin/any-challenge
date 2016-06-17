@@ -3,7 +3,7 @@
 <div id="challenge" class="player">
     <div id="players" class="player__cards">
         <div class="player__profile">
-            <p style="padding: 1vw 6vw;">Пока поиграем в тёмную. Набирай очки, для победы нужна целая куча :)</p>
+            <!--<p style="padding: 1vw 6vw;">Пока поиграем в тёмную. Набирай очки, для победы нужна целая куча :)</p>-->
             <span class="player__profile__name"></span>
             <span class="player__profile__numbers"></span>
             <div class="player__profile__played-cards"></div>
@@ -12,17 +12,9 @@
 </div>
 
 <script>
-//    var ws = <%- JSON.stringify(@ws, null, 2) %>;
-//    var challenge = <%- JSON.stringify(@challenge, null, 2) %>;
-//    var players = [];
-//
-//    var socket = io('http://' + ws.host + ':' + ws.port + '/challenge', { query: 'challenge=' + challenge.id });
-//
-//    socket.on('players', function(updatedPlayers) {
-//        players = updatedPlayers;
-//
-//        drawChallenge();
-//    });
+    var challenge = <%- JSON.stringify(@challenge, null, 2) %>;
+
+    var players = <%- JSON.stringify(@players, null, 2) %>;
 
     var drawPlayer = function(data, i) {
         var profile = d3.select(this)
@@ -56,4 +48,6 @@
                 .classed('player__profile__played-cards__card', true)
                 .each(drawPlayer);
     };
+
+    drawChallenge();
 </script>
