@@ -88,15 +88,15 @@ log.appState('dealer', 'ready to deal cards');
 var server = io()
     .listen(config.get('ws.port'));
 
-server.of('/challenge')
-    .on('connection', socket => {
-        const challengeId = socket.handshake.query.challenge;
-
-        addDashboard(socket);
-        pushPlayersToDashboard(challengeId);
-
-        socket.on('disconnect', () => removeDashboard(socket));
-    });
+// server.of('/challenge')
+//     .on('connection', socket => {
+//         const challengeId = socket.handshake.query.challenge;
+//
+//         addDashboard(socket);
+//         pushPlayersToDashboard(challengeId);
+//
+//         socket.on('disconnect', () => removeDashboard(socket));
+//     });
 
 server.of('/player')
     .on('connection', socket => {
@@ -145,7 +145,7 @@ cards
         }
 
         // pushCardsToPlayer(card.player);
-        pushPlayersToAllDashboards();
+        // pushPlayersToAllDashboards();
 
         // if (card.type == 'initial') {
             // pushProfileUpdateToPlayer(card.player);
